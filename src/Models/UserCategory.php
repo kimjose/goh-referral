@@ -3,6 +3,8 @@ namespace Infinitops\Referral\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model{
+class UserCategory extends Model{
     
+    protected $fillable = ['name', 'description', 'permissions'];
+
 }
