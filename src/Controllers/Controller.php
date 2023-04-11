@@ -1,54 +1,54 @@
 <?php
+
 namespace Infinitops\Referral\Controllers;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Infinitops\Referral\Models\User;
+use Infinitops\Referral\Models\UserToken;
+use Illuminate\Support\Facades\Notification;
 use Infinitops\Referral\Controllers\Utils\Utility;
 
-class Controller{
+class Controller
+{
 
     protected User $user;
 
     public function __construct()
     {
-        session_start();
-        if (!isset($_SESSION[$_ENV['SESSION_APP_NAME']])) {
-            http_response_code(401);
-            Utility::logError(401, "User not authenticated,..");
-            echo "First";
-            die(401);
-        }
-        $sessionData = $_SESSION[$_ENV['SESSION_APP_NAME']];
-        if (!isset($sessionData['expires_at'])) {
-            http_response_code(401);
-            Utility::logError(401, "User not authenticated,..");
-            echo "Second";
-            die(401);
-        } else {
-            if (time() > $sessionData['expires_at']) {
-                session_unset();
-                session_destroy();
-                Utility::logError(401, "Session expired");
-                http_response_code(401);
-                //        die(401);
-            } else {
-                $this->user = $sessionData['user'];
-                //        if ($currUser->getUserCategory()->events_admin_access != 1){
-                //            die("You are not allowed to access this service. Consult admin for assistance");
-                //        }
-                $sessionData['expires_at'] = time() + ($_ENV['SESSION_DURATION'] * 60);
-                $_SESSION[$_ENV['SESSION_APP_NAME']] = $sessionData;
-            }
-        }
     }
 
-    public static function response($code, $message, $data = null)
+    public function verifyTokenAuth()
     {
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([
-            "code" => $code,
-            "message" => $message,
-            "data" => $data
-        ]);
+        try {
+            $token = $_SERVER['HTTP_TOKEN'];
+            $publicKey = file_get_contents(__DIR__ . '/../../mykey.pub');
+            $userToken = UserToken::where('access_token', $token)->first();
+            if ($userToken == null) throw new \Exception("Invalid token", UNAUTHORIZED_ERROR_CODE);
+
+            $jwt = JWT::decode($userToken->refresh_token, new Key($publicKey,  'RS256'));
+            $decoded_array = (array) $jwt;
+
+            $privateKey = file_get_contents(__DIR__ . '/../../mykey.pem');
+            $issuer_claim = 'infinitops';
+            $issuedat_claim = time();
+            $expire_claim = $issuedat_claim + TOKEN_TIME;
+            $token = array(
+                "iss" => $issuer_claim,
+                "iat" => $issuedat_claim,
+                "exp" => $expire_claim,
+                "data" => array(
+                    "id" => $userToken->user_id
+                )
+            );
+            $jwt = JWT::encode($token, $privateKey, 'RS256');
+            $userToken->update(['refresh_token' => $jwt]);
+            // print_r($decoded_array);
+        } catch (\Throwable $th) {
+            response(UNAUTHORIZED_ERROR_CODE, $th->getMessage());
+            http_response_code(UNAUTHORIZED_ERROR_CODE);
+            exit(UNAUTHORIZED_ERROR_CODE);
+        }
     }
 
     /*******
@@ -65,6 +65,4 @@ class Controller{
             "message" => $message
         ]);
     }
-
-
 }

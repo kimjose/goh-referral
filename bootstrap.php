@@ -38,9 +38,11 @@ $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 //CONSTANTs
+define('TOKEN_TIME', $_ENV["TOKEN_TIME"] ?? 480);
 define("SUCCESS_RESPONSE_CODE", 200);
 define("PRECONDITION_FAILED_ERROR_CODE", 412);
 define("FORBIDDEN_RESPONSE_CODE", 403);
+define("UNAUTHORIZED_ERROR_CODE", 401);
 //Permissions
 define("PERM_SYSTEM_ADMINISTRATION", 1);
 define("PERM_USER_MANAGEMENT", 2);
@@ -64,4 +66,14 @@ function hasPermission($permission, $user): bool
     $permissions = explode(',', $category->permissions);
     if (in_array($permission, $permissions)) return true;
     return false;
+}
+
+function response($code, $message, $data = null)
+{
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        "code" => $code,
+        "message" => $message,
+        "data" => $data
+    ]);
 }

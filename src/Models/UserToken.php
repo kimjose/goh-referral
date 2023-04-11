@@ -1,5 +1,5 @@
 <?php
-namespace Umb\Referra\Models;
+namespace Infinitops\Referral\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
