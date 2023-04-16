@@ -31,6 +31,10 @@ $router->mount('/user', function () use ($router) {
         $controller->login($data);
     });
 });
+$router->get('/verify_session', function(){
+    $controller = new UsersController();
+    $controller->verifyTokenAuth();
+});
 
 
 
