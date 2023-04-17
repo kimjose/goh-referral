@@ -33,7 +33,7 @@ $router->mount('/user', function () use ($router) {
 });
 $router->get('/verify_session', function(){
     $controller = new UsersController();
-    $controller->verifyTokenAuth();
+    $controller->getLoggedInUser();
 });
 
 

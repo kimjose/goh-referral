@@ -43,6 +43,7 @@ class Controller
             );
             $jwt = JWT::encode($token, $privateKey, 'RS256');
             $userToken->update(['refresh_token' => $jwt]);
+            return $decoded_array;
             // print_r($decoded_array);
         } catch (\Throwable $th) {
             response(UNAUTHORIZED_ERROR_CODE, $th->getMessage());

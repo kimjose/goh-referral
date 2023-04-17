@@ -99,4 +99,16 @@ class UsersController extends Controller
             http_response_code(UNAUTHORIZED_ERROR_CODE);
         }
     }
+
+    public function getLoggedInUser(){
+        try {
+            $data = $this->verifyTokenAuth();
+            $userData = $data['data'];
+            response(SUCCESS_RESPONSE_CODE, "Success", User::findOrFail($userData->id));
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(UNAUTHORIZED_ERROR_CODE, "Unable to login. Try again later::" . $th->getMessage());
+        }
+    }
+
 }
