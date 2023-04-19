@@ -1,6 +1,7 @@
 <?php
 
 use Bramus\Router\Router;
+use Infinitops\Referral\Controllers\PatientsController;
 use Infinitops\Referral\Controllers\UsersController;
 
 require_once __DIR__ . "/vendor/autoload.php";
@@ -29,6 +30,22 @@ $router->mount('/user', function () use ($router) {
     });
     $router->post('/login', function () use ($controller, $data) {
         $controller->login($data);
+    });
+});
+$router->mount('/patient', function() use ($router) {
+    $controller = new PatientsController();
+    //GET
+    $router->get('/all', function () use ($controller) {
+        $controller->getPatients();
+    });
+
+    //POST
+    $data = json_decode(file_get_contents('php://input'), true);
+    $router->post('/create', function () use ($controller, $data) {
+        $controller->createPatient($data);
+    });
+    $router->post('/update/{id}', function ($id) use ($controller, $data) {
+        $controller->updatePatient($id, $data);
     });
 });
 $router->get('/verify_session', function(){

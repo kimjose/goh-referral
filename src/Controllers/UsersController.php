@@ -6,6 +6,7 @@ use Firebase\JWT\JWT;
 use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\UserToken;
 use Infinitops\Referral\Controllers\Utils\Utility;
+use Infinitops\Referral\Controllers\Controller;
 
 class UsersController extends Controller
 {

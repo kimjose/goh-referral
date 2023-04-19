@@ -16,6 +16,8 @@ class Controller
 
     public function __construct()
     {
+        $userData = $this->verifyTokenAuth();
+        $this->user = User::find($userData['id']);
     }
 
     public function verifyTokenAuth()
