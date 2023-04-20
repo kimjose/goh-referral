@@ -15,6 +15,7 @@ class UsersController extends Controller
     public function createUser($data)
     {
         try {
+            $this->verifyTokenAuth();
             $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
@@ -35,6 +36,7 @@ class UsersController extends Controller
     public function updateUser($id, $data)
     {
         try {
+            $this->verifyTokenAuth();
             $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));

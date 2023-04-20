@@ -16,8 +16,7 @@ class Controller
 
     public function __construct()
     {
-        $userData = $this->verifyTokenAuth();
-        $this->user = User::find($userData['id']);
+        
     }
 
     public function verifyTokenAuth()
@@ -45,6 +44,7 @@ class Controller
             );
             $jwt = JWT::encode($token, $privateKey, 'RS256');
             $userToken->update(['refresh_token' => $jwt]);
+            $this->user = User::find($decoded_array['id']);
             return $decoded_array;
             // print_r($decoded_array);
         } catch (\Throwable $th) {
