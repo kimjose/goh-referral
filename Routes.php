@@ -33,18 +33,20 @@ $router->mount('/user', function () use ($router) {
     });
 });
 $router->mount('/patient', function() use ($router) {
-    $controller = new PatientsController();
     //GET
-    $router->get('/all', function () use ($controller) {
+    $router->get('/all', function () {
+        $controller = new PatientsController();
         $controller->getPatients();
     });
 
     //POST
     $data = json_decode(file_get_contents('php://input'), true);
-    $router->post('/create', function () use ($controller, $data) {
+    $router->post('/create', function () use ($data) {
+        $controller = new PatientsController();
         $controller->createPatient($data);
     });
-    $router->post('/update/{id}', function ($id) use ($controller, $data) {
+    $router->post('/update/{id}', function ($id) use ($data) {
+        $controller = new PatientsController();
         $controller->updatePatient($id, $data);
     });
 });

@@ -22,12 +22,14 @@ class PatientsController extends Controller
     {
         try {
             $attributes = [
-                "surname", "first_name", "other_names", "gender", "dob", "marital_status", "education_level", "primary_occupation",
+                "surname", "first_name", "other_names", "gender", "dob", "marital_status", "education", "primary_occupation",
                 "identifier", "identifier_type", "phone_no", "alt_phone_no", "email", "nationality", "county_code", "sub_county", "nearest_health_centre",
                 "nok_name", "nok_relationship", "nok_phone_no", "has_nhif", "nhif_number", "preferred_mop"
             ];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Patient::where('identifier', $data['identifier'])->first();
+            if($exists) throw new \Exception("Patient already exists", -1);
             $data['created_by'] = $this->user->id;
             $patient = Patient::create($data);
             response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
@@ -41,7 +43,7 @@ class PatientsController extends Controller
     {
         try {
             $attributes = [
-                "surname", "first_name", "other_names", "gender", "dob", "marital_status", "education_level", "primary_occupation",
+                "surname", "first_name", "other_names", "gender", "dob", "marital_status", "education", "primary_occupation",
                 "identifier", "identifier_type", "phone_no", "alt_phone_no", "email", "nationality", "county_code", "sub_county", "nearest_health_centre",
                 "nok_name", "nok_relationship", "nok_phone_no", "has_nhif", "nhif_number", "preferred_mop"
             ];
