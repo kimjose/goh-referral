@@ -1,6 +1,5 @@
 <?php
-namespace Infinitops\Referral\Models;;
-require_once __DIR__ . "/../bootstrap.php";
+namespace Infinitops\Referral\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

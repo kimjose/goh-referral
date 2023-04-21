@@ -162,5 +162,19 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "68d92632-87b1-4508-a668-5ff0813d2715",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get counties",
+    "url": "{{base_url}}counties",
+    "method": "GET",
+    "sortNum": 90000,
+    "created": "2023-04-21T17:29:33.442Z",
+    "modified": "2023-04-21T17:29:53.295Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

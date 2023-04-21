@@ -3,6 +3,8 @@
 use Bramus\Router\Router;
 use Infinitops\Referral\Controllers\PatientsController;
 use Infinitops\Referral\Controllers\UsersController;
+use Infinitops\Referral\Models\County;
+use Infinitops\Referral\Models\SubCounty;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
@@ -13,6 +15,14 @@ $router->set404(function () {
     header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
     $notFound = file_get_contents("404.html");
     echo $notFound;
+});
+$router->get('/counties', function(){
+    $counties = County::all();
+    foreach($counties as $county) {
+        $subcounties = SubCounty::where('county_code', $county->code)->get();
+        $county->sub_counties = $subcounties;
+    }
+    response(SUCCESS_RESPONSE_CODE, "Counties", $counties);
 });
 $router->mount('/user', function () use ($router) {
     $controller = new UsersController();
