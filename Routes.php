@@ -48,6 +48,10 @@ $router->mount('/patient', function() use ($router) {
         $controller = new PatientsController();
         $controller->getPatients();
     });
+    $router->get('/search_by_identifier/{identifier}', function ($identifier) {
+        $controller = new PatientsController();
+        $controller->searchPatientByIdentifier($identifier); 
+    });
 
     //POST
     $data = json_decode(file_get_contents('php://input'), true);

@@ -12,7 +12,7 @@ class PatientsController extends Controller
         parent::__construct();
         $this->verifyTokenAuth();
     }
-    
+
     public function getPatients()
     {
         response(SUCCESS_RESPONSE_CODE, "Patients", Patient::all());
@@ -29,7 +29,7 @@ class PatientsController extends Controller
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
             $exists = Patient::where('identifier', $data['identifier'])->first();
-            if($exists) throw new \Exception("Patient already exists", -1);
+            if ($exists) throw new \Exception("Patient already exists", -1);
             $data['created_by'] = $this->user->id;
             $patient = Patient::create($data);
             response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
@@ -53,6 +53,19 @@ class PatientsController extends Controller
             if ($patient == null) throw new \Exception("Patient not found.");
             $patient->update($data);
             response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function searchPatientByIdentifier($identifier)
+    {
+        try {
+            $patient = Patient::where('identifier', $identifier)->first();
+            if($patient)
+                response(SUCCESS_RESPONSE_CODE, "Patient found", $patient);
+            else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
