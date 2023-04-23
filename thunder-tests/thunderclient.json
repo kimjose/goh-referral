@@ -223,5 +223,72 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "992be665-d90a-4138-b621-9346d286dff5",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "create referral",
+    "url": "{{base_url}}referral/create",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2023-04-23T08:01:54.330Z",
+    "modified": "2023-04-23T08:08:57.540Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "2f61427b-52eb-4f36-8749-a74ff3f3cee1",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get referrals",
+    "url": "{{base_url}}referral/all",
+    "method": "GET",
+    "sortNum": 140000,
+    "created": "2023-04-23T08:09:31.851Z",
+    "modified": "2023-04-23T08:10:03.929Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "524b7442-ecc5-44db-9745-7b3381391d31",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "update referral",
+    "url": "{{base_url}}referral/update/1",
+    "method": "POST",
+    "sortNum": 150000,
+    "created": "2023-04-23T08:10:37.007Z",
+    "modified": "2023-04-23T08:12:36.356Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria tuma\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

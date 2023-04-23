@@ -7,6 +7,7 @@ use Infinitops\Referral\Models\SubCounty;
 use Infinitops\Referral\Models\Department;
 use Infinitops\Referral\Controllers\UsersController;
 use Infinitops\Referral\Controllers\PatientsController;
+use Infinitops\Referral\Controllers\ReferralsController;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
@@ -74,6 +75,24 @@ $router->mount('/patient', function() use ($router) {
         $controller->updatePatient($id, $data);
     });
 });
+$router->mount('/referral', function() use ($router){
+    $router->get('/all', function(){
+        $controller = new ReferralsController();
+        $controller->getReferrals();
+    });
+
+    //POST
+    $data = json_decode(file_get_contents('php://input'), true);
+    $router->post('/create', function() use($data){
+        $controller = new ReferralsController();
+        $controller->createReferral($data);
+    });
+    $router->post('/update/{id}', function($id) use($data){
+        $controller = new ReferralsController();
+        $controller->updateReferral($id, $data);
+    });
+});
+
 $router->get('/verify_session', function(){
     $controller = new UsersController();
     $controller->getLoggedInUser();
