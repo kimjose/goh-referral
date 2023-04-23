@@ -1,11 +1,12 @@
 <?php
 
 use Bramus\Router\Router;
-use Infinitops\Referral\Controllers\PatientsController;
-use Infinitops\Referral\Controllers\UsersController;
 use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Facility;
 use Infinitops\Referral\Models\SubCounty;
+use Infinitops\Referral\Models\Department;
+use Infinitops\Referral\Controllers\UsersController;
+use Infinitops\Referral\Controllers\PatientsController;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
@@ -28,6 +29,10 @@ $router->get('/counties', function(){
 $router->get('/facilities', function(){
     $facilities = Facility::all();
     response(SUCCESS_RESPONSE_CODE, "Facilities", $facilities);
+});
+$router->get('/departments', function(){
+    $departments = Department::all();
+    response(SUCCESS_RESPONSE_CODE, "Departments", $departments);
 });
 $router->mount('/user', function () use ($router) {
     $controller = new UsersController();

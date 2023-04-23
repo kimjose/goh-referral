@@ -209,5 +209,19 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "a75174f9-d2d8-4df7-b478-ee38a7565270",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get departments",
+    "url": "{{base_url}}departments",
+    "method": "GET",
+    "sortNum": 120000,
+    "created": "2023-04-23T06:51:45.216Z",
+    "modified": "2023-04-23T06:55:45.025Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
