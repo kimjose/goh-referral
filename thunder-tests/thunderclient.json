@@ -195,5 +195,19 @@
     ],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "69fe54c0-5d5a-41ba-b74f-19f078599241",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get facilities",
+    "url": "{{base_url}}facilities",
+    "method": "GET",
+    "sortNum": 110000,
+    "created": "2023-04-23T06:26:34.740Z",
+    "modified": "2023-04-23T06:26:58.518Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
