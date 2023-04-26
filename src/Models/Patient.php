@@ -12,4 +12,20 @@ class Patient extends Model
         "identifier", "identifier_type", "phone_no", "alt_phone_no", "email", "nationality", "county_code", "sub_county", "nearest_health_centre",
         "nok_name", "nok_relationship", "nok_phone_no", "has_nhif", "nhif_number", "preferred_mop", "created_by"
     ];
+
+    /**  */
+    public function getName(){
+        return $this->surname . ' ' . $this->first_name . ' ' . $this->other_names;
+    }
+
+    /** @return County */
+    public function county(){
+        return County::where('code', $this->county_code)->first();
+    }
+
+    /** @return SubCounty*/
+    public function subCounty(){
+        return SubCounty::find($this->sub_county);
+    }
+
 }

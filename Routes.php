@@ -99,12 +99,13 @@ $router->get('/verify_session', function(){
 });
 
 
-
-
-
 $router->all('/logout', function () {
     session_start();
     unset($_SESSION[$_ENV['SESSION_APP_NAME']]);
+});
+
+$router->mount('/web', function () use($router){
+
 });
 
 // Thunderbirds are go!
