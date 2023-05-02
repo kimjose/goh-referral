@@ -115,11 +115,11 @@
     "method": "POST",
     "sortNum": 60000,
     "created": "2023-04-21T06:33:29.805Z",
-    "modified": "2023-04-21T07:19:21.648Z",
+    "modified": "2023-05-02T19:16:22.643Z",
     "headers": [
       {
         "name": "TOKEN",
-        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMDYxNTQzLCJleHAiOjE2ODIwNjIxNDMsImRhdGEiOnsiaWQiOjF9fQ.NYpOr81S_am1GESyPTuEKyIwA9NDabU04Ne1MYcgBnfZ8TDzyPQC-3qRN5r2rYdjUemCYMgYfW-phUkNat6Sa4QfhRQX3tZ56vfQOX2vEFBgWDXlTNYwMTBYAFFbe7cP6SoRJ6bvIeZPRnGDJDSObvtVqxGwybYZQ9E2MWXBZTsryTUFF619fnO3q1Jxo9VNjg4zFfDtAxh_kp-Kv6ciVhkDXpryAT8Noj0mKTbz1mDBN6gLQ45waVjSK0fr0TGKGkBNVCc4jefy_ebvvgn9z3FGMMW3jd0WS_cxmj14gVYzPDakVR8ezSI4Pf67zDQLKYOen-aPkLwYNJ4BfOHF1A"
+        "value": "{{token}}"
       }
     ],
     "params": [],
