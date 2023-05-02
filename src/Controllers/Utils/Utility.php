@@ -102,7 +102,7 @@ class Utility
         $data .= "      ClientAddr " . $_SERVER["REMOTE_ADDR"];
         $data .= "\n";
         // fwrite($handle, $data);
-        fclose($handle);
+        // fclose($handle);
     }
 
     public static function uploadFile($newName = '', $dir = null)
