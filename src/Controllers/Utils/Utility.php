@@ -101,7 +101,7 @@ class Utility
         $data .= "      Message " . $message;
         $data .= "      ClientAddr " . $_SERVER["REMOTE_ADDR"];
         $data .= "\n";
-        fwrite($handle, $data);
+        // fwrite($handle, $data);
         fclose($handle);
     }
 
