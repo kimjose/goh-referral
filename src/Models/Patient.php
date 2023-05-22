@@ -28,4 +28,9 @@ class Patient extends Model
         return SubCounty::find($this->sub_county);
     }
 
+    /** @return PatientReferral | null */
+    public function lastReferral(){
+        return PatientReferral::where('patient_id', $this->id)->orderBy('created_at', 'desc')->first();
+    }
+
 }

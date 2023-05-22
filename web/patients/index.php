@@ -35,6 +35,7 @@ $patients = Patient::all();
                         <th>Phone number</th>
                         <th>County</th>
                         <th>SubCounty</th>
+                        <th>Last Referral Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -48,6 +49,7 @@ $patients = Patient::all();
                         <th>Phone number</th>
                         <th>County</th>
                         <th>SubCounty</th>
+                        <th>Last Referral Status</th>
                         <th>Actions</th>
                     </tr>
                 </tfoot>
@@ -62,7 +64,17 @@ $patients = Patient::all();
                             <td><?php echo $patient->phone_no ?></td>
                             <td><?php echo $patient->county()->name ?></td>
                             <td><?php echo $patient->subCounty()->name ?></td>
-                            <td></td>
+                            <td><?php echo $patient->lastReferral() ? $patient->lastReferral()->status : '' ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                    Action <span class="sr-only">Toggle Drropdown</span>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" href="https://psms.mgickenya.org/psms/web?page=user_order/view_uo&amp;id=2373">
+                                        <span class="fa fa-eye text-primary"></span> View
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
