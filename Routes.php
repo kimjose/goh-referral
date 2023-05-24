@@ -5,6 +5,7 @@ use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Facility;
 use Infinitops\Referral\Models\SubCounty;
 use Infinitops\Referral\Models\Department;
+use Infinitops\Referral\Controllers\WebController;
 use Infinitops\Referral\Controllers\UsersController;
 use Infinitops\Referral\Controllers\PatientsController;
 use Infinitops\Referral\Controllers\ReferralsController;
@@ -108,7 +109,15 @@ $router->all('/logout', function () {
 });
 
 $router->mount('/web', function () use($router){
-
+    $controller = new WebController();
+    $router->post('/patient/create', function () use($controller, $router){
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->createPatient($data);
+    });
+    $router->post('/patient/create/{id}', function ($id) use($controller, $router){
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updatePatient($id, $data);
+    });
 });
 
 // Thunderbirds are go!

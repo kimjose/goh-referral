@@ -3,12 +3,20 @@
 use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\SubCounty;
 
-$educationLevels = [];
-$occupations = [];
 $nationalities = [];
-$relationships = [];
-$mops = [];
-$otherInsurances = [];
+$handle = fopen(__DIR__ . "/../../public/assets/countries.json", 'r');
+$data = fread($handle, filesize(__DIR__ . "/../../public/assets/countries.json"));
+$countries = json_decode($data, true);
+foreach ($countries as $country) {
+    $nationalities[] = $country['nationality'];
+}
+
+$educationLevels = ["None", "Primary", "Secondary", "Tertiary"];
+$occupations = ["Farmer", "Business", "Trading", "Manufacturing", "Teaching", "Student", "Healthcare Worker", "Security", "Transport", "Other"];
+
+$relationships = ["Parent", "Sibling", "Spouse", "Child", "Relative", "Other"];
+$mops = ["Cash", "Insurance", "Cooperate"];
+$otherInsurances = ["Britam", "Directline", "UAP", "Heritage", "Madison", "CIC", "Old Mutual", "Jubilee"];
 $counties = County::all();
 $subCounties = SubCounty::all();
 ?>
@@ -47,6 +55,8 @@ $subCounties = SubCounty::all();
                             <label for="selectIdentifierType">Identifier Type</label>
                             <select name="identifier_type" id="selectIdentifierType" class="form-control">
                                 <option value="" selected hidden>Select Identifier Type</option>
+                                <option value="national_id">National ID</option>
+                                <option value="passport">Passport</option>
                             </select>
                         </div>
                     </div>
@@ -112,8 +122,8 @@ $subCounties = SubCounty::all();
                             <label for="select">Primary Occupation</label>
                             <select name="primary_occupation" id="selectEducation" class="form-control" required>
                                 <option value="" selected hidden>Select primary occupation</option>
-                                <?php foreach ($educationLevels as $education) : ?>
-                                    <option value="<?php echo $education ?>"><?php echo $education ?></option>
+                                <?php foreach ($occupations as $occupation) : ?>
+                                    <option value="<?php echo $occupation ?>"><?php echo $occupation ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -196,7 +206,7 @@ $subCounties = SubCounty::all();
                         <div class="form-group">
                             <label for="selectHasNhif">Has NHIF</label>
                             <select name="has_nfif" id="selectHasNhif" class="form-control" required>
-                                <option value="" selected hidden>Select Nationality</option>
+                                <option value="" selected hidden>Has NHIF</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
@@ -244,22 +254,22 @@ $subCounties = SubCounty::all();
     formPatient.addEventListener('submit', e => {
         e.preventDefault();
         let formData = new FormData(formPatient);
-        fetch('../patient/create', {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {
-                "content-type": "application/x-www-form-urlencoded"
-            }
-        })
-        .then(response => response.json())
-        .then(response =>{
-            if(response.code == 200){
-                toastr.success(response.message);
-                setTimeout(() => location.replace('index?page=patients'), 789)
-            } else throw new Error(response.message);
-        })
-        .catch(error => {
-            toastr.error(error.message);
-        })
+        fetch('patient/create', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded"
+                }
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.code == 200) {
+                    toastr.success(response.message);
+                    setTimeout(() => location.replace('index?page=patients'), 789)
+                } else throw new Error(response.message);
+            })
+            .catch(error => {
+                toastr.error(error.message);
+            })
     })
 </script>
