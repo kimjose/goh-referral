@@ -20,7 +20,9 @@ $patients = Patient::all();
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-
+    <div class="card-tools">
+				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index?page=patients-edit"><i class="fa fa-plus"></i> Add New Patient</a>
+			</div>
     </div>
     <div class="card-body">
         <div class="table-responsive">

@@ -1,8 +1,16 @@
 <?php
 
+use Infinitops\Referral\Models\County;
+use Infinitops\Referral\Models\SubCounty;
 
 $educationLevels = [];
 $occupations = [];
+$nationalities = [];
+$relationships = [];
+$mops = [];
+$otherInsurances = [];
+$counties = County::all();
+$subCounties = SubCounty::all();
 ?>
 
 <!-- Page Heading -->
@@ -110,9 +118,148 @@ $occupations = [];
                             </select>
                         </div>
                     </div>
-                    
+
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputPhoneNo">Phone Number</label>
+                            <input type="number" name="phone_no" id="inputPhoneNo" class="form-control" placeholder="Phone number" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputPhoneNoAlt">Alternate Phone Number</label>
+                            <input type="number" name="phone_no_alt" id="inputPhoneNoAlt" class="form-control" placeholder="Alternate Phone number" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputEmail">Email</label>
+                            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="email">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectNationality">Nationality</label>
+                            <select name="nationality" id="selectNationality" class="form-control" required>
+                                <option value="" selected hidden>Select Nationality</option>
+                                <?php foreach ($nationalities as $nationality) : ?>
+                                    <option value="<?php echo $nationality ?>"><?php echo $nationality ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectCounty">County</label>
+                            <select name="county" id="selectCounty" class="form-control" required>
+                                <option value="" selected hidden>Select County</option>
+                                <?php foreach ($counties as $county) : ?>
+                                    <option value="<?php echo $county->code ?>"><?php echo $county->name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputNearestHc">Nearest Health Centre</label>
+                            <input type="text" name="nearest_health_centre" id="inputNearestHc" class="form-control" placeholder="Nearest Health Centre">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputNokName">Next of kin</label>
+                            <input type="text" name="nok_name" id="inputNokName" class="form-control" placeholder="Next of kin">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectNokRelationship">Relationship</label>
+                            <select name="nok_relationship" id="selectNokRelationship" class="form-control" required>
+                                <option value="" selected hidden>Select Relationship</option>
+                                <?php foreach ($relationships as $relationship) : ?>
+                                    <option value="<?php echo $relationship ?>"><?php echo $relationship ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputNokPhoneNo">Next of kin phone number</label>
+                            <input type="number" name="nok_phone_no" id="inputNokPhoneNo" class="form-control" placeholder="Next of kin phone number">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectHasNhif">Has NHIF</label>
+                            <select name="has_nfif" id="selectHasNhif" class="form-control" required>
+                                <option value="" selected hidden>Select Nationality</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="inputNhifNumber">NHIF Number</label>
+                            <input type="text" name="nhif_number" id="inputNhifNumber" class="form-control" placeholder="NHIF Number">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectPreferredMop">Preferred Mode of Payment</label>
+                            <select name="preferred_mop" id="selectPreferredMop" class="form-control" required>
+                                <option value="" selected hidden>Select</option>
+                                <?php foreach ($mops as $mop) : ?>
+                                    <option value="<?php echo $mop ?>"><?php echo $mop ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        <div class="form-group">
+                            <label for="selectOtherInsurance">Other Insurance</label>
+                            <select name="other_insurance" id="selectOtherInsurance" class="form-control" required>
+                                <option value="" selected hidden>Select</option>
+                                <?php foreach ($otherInsurances as $otherInsurance) : ?>
+                                    <option value="<?php echo $otherInsurance ?>"><?php echo $otherInsurance ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <input type="submit" value="Submit" class="btn btn-primary">
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    const formPatient = document.getElementById('formPatient')
+    formPatient.addEventListener('submit', e => {
+        e.preventDefault();
+        let formData = new FormData(formPatient);
+        fetch('../patient/create', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                "content-type": "application/x-www-form-urlencoded"
+            }
+        })
+        .then(response => response.json())
+        .then(response =>{
+            if(response.code == 200){
+                toastr.success(response.message);
+                setTimeout(() => location.replace('index?page=patients'), 789)
+            } else throw new Error(response.message);
+        })
+        .catch(error => {
+            toastr.error(error.message);
+        })
+    })
+</script>

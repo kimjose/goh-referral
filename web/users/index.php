@@ -1,7 +1,6 @@
 <?php
 
-use Umb\Mentorship\Models\User;
-
+use Infinitops\Referral\Models\User;
 $users = User::all();
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 ?>
@@ -9,6 +8,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 		window.location.replace("index")
 	</script>
 <?php endif; ?>
+
 <div class="col-lg-12">
 	<div class="card card-outline card-success">
 		<div class="card-header">

@@ -150,10 +150,10 @@ include_once __DIR__ . "/auth.php";
 
     <!-- Main Footer -->
     <footer class="main-footer">
-      <strong>Copyright &copy; 2023 <a href="https://psms.mgickenya.org:81/event-management/">CIHEB CONNECT</a>.</strong>
+      <strong>Copyright &copy; 2023 <a href="#">Jumuia</a>.</strong>
       All rights reserved.
       <div class="float-right d-none d-sm-inline-block">
-        <b>eSupport Supervision</b>
+        <b>Patient Referral</b>
       </div>
     </footer>
   </div>
