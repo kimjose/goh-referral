@@ -1,0 +1,294 @@
+[
+  {
+    "_id": "17d1acce-2afa-443b-b1d2-60d4c17a02b9",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "create user",
+    "url": "{{base_url}}user/create",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2023-04-21T06:33:29.800Z",
+    "modified": "2023-04-21T06:33:29.800Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first_name\": \"Admin\",\n  \"middle_name\": \"Admin\",\n  \"surname\": \"Admin\",\n  \"email\": \"admin@admin.com\",\n  \"phone_number\": \"0717845485\",\n  \"category_id\": 1,\n  \"password\": \"admin123\"\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
+  },
+  {
+    "_id": "b1977a8f-0248-4db5-85bf-6b30458a021f",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "Update User",
+    "url": "{{base_url}}user/update/1",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-04-21T06:33:29.801Z",
+    "modified": "2023-04-21T06:33:29.801Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"first_name\": \"Admin\",\n  \"middle_name\": \"Adminp\",\n  \"surname\": \"Admin\",\n  \"email\": \"admin@admin.com\",\n  \"phone_number\": \"0717845485\",\n  \"category_id\": 1,\n  \"password\": \"admin123\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "3ec7f08f-9abe-4056-98f9-3b020e1b32e3",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "login",
+    "url": "{{base_url}}user/login",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-04-21T06:33:29.802Z",
+    "modified": "2023-04-21T06:55:31.349Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"password\": \"admin123\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "84a0623f-993e-4c44-96b6-b6344dfb92c7",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get users",
+    "url": "{{base_url}}user/all",
+    "method": "GET",
+    "sortNum": 40000,
+    "created": "2023-04-21T06:33:29.803Z",
+    "modified": "2023-04-21T06:57:27.970Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMDYwMTMxLCJleHAiOjE2ODIwNjAzMTEsImRhdGEiOnsiaWQiOjF9fQ.j4UDE87dJECMmbs_OiC-WY4AtONdvVg5x0azxMU_l0vw0kyZGwwrt5P1d3m_bNsW8YUg_ZSn0xkMGz26GQlsqfbawdJo4S6fmW7MvEyYQjicOGq9-xdr50YtQaJFIP-Rh6bnlpdK0sOMMg8qZ3rACTn0lQxl5ZdRdu7_eahirTb6-Tock2u3u5SoO4S1V7AlTGUx_8-Mxx9cV-aY-e56mNLobv17nx4LiqK4wXV6s8gPCacB4gqNZ9zbAp3fqSeAtHlNk2aB5VbriHoJFI3oTrT_88a5mhz5sejR_3I_IRwwjviJ3DyMSCiF7G7xYSgDWlyXaYbDyIRIZjBLOc_ZVA"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "989c727b-ef82-47a9-a934-fbe8a60745f5",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "verify session",
+    "url": "{{base_url}}verify_session",
+    "method": "GET",
+    "sortNum": 50000,
+    "created": "2023-04-21T06:33:29.804Z",
+    "modified": "2023-04-21T06:33:29.804Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgxNjQ1OTY3LCJleHAiOjE2ODE2NDYxNDcsImRhdGEiOnsiaWQiOjF9fQ.SETU22-g8kx4_RUl6PTrityzDQv1Ihwo1QvMRbdg-N3c-4R6QC-PjjzUZxbyIV6i-x1rhELYZ0dGFoZaQ9o6jiGkdTpU5HqWjnhNWY-n5CUzQbzmIcdr3npeU7wVx-M4vYrZdWrd1jkgRV2C1IxxpcyAcz52YiUngf8PhN8SHMY5voUwWcqHhwIt1Ll6BktYGuIJlzbs0TCuz4tIQjfyhvOcgWdfTAyMcR2NWarhjaV9FAmpkjKp8rRzkCpS_H80z3BeSq37Q-6cyTEQFud8X--GhPMj1aht3YMXWA1ogH6-JzExpAGf_8Fnj3wveD4Lm5mfUbHBMkDyQJw3Ks3YUw"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "11c8de4b-0706-4546-965b-39bcc898eafa",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "create patient",
+    "url": "{{base_url}}patient/create",
+    "method": "POST",
+    "sortNum": 60000,
+    "created": "2023-04-21T06:33:29.805Z",
+    "modified": "2023-05-02T19:16:22.643Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"surname\": \"Kamau\",\n  \"first_name\": \"John\",\n  \"other_names\": \"Zuckeberg Antony\",\n  \"gender\": \"male\",\n  \"dob\": \"1956-06-07\",\n  \"marital_status\": \"married\",\n  \"education\": \"High School\",\n  \"primary_occupation\": \"rider\",\n  \"identifier\": \"3476892\",\n  \"identifier_type\": \"National ID\",\n  \"phone_no\": \"0712908657\",\n  \"alt_phone_no\": \"\",\n  \"email\": \"\",\n  \"nationality\": \"Kenyan\",\n  \"county_code\": 47,\n  \"sub_county\": 200,\n  \"nearest_health_centre\": \"Kibera Community Amref\",\n  \"nok_name\": \"Javan Masinga\",\n  \"nok_relationship\": \"Son\",\n  \"nok_phone_no\": \"0729099099\",\n  \"has_nhif\": 1,\n  \"nhif_number\": \"789JL098\",\n  \"preferred_mop\": \"Cash\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "48136ec8-4102-438b-ae2b-f27758b0b0e1",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "Get Patients",
+    "url": "{{base_url}}patient/all",
+    "method": "GET",
+    "sortNum": 70000,
+    "created": "2023-04-21T06:33:29.806Z",
+    "modified": "2023-04-22T15:48:29.111Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "68e55c2c-a338-4893-b627-598f8a024d89",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "Update Patient",
+    "url": "{{base_url}}patient/update",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2023-04-21T06:33:29.807Z",
+    "modified": "2023-04-21T06:33:29.807Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "68d92632-87b1-4508-a668-5ff0813d2715",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get counties",
+    "url": "{{base_url}}counties",
+    "method": "GET",
+    "sortNum": 90000,
+    "created": "2023-04-21T17:29:33.442Z",
+    "modified": "2023-04-21T17:29:53.295Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "e5747a43-a164-4746-949a-4ab357bad42a",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "search patient by identifier",
+    "url": "{{base_url}}patient/search_by_identifier/34768928",
+    "method": "GET",
+    "sortNum": 100000,
+    "created": "2023-04-22T15:44:58.629Z",
+    "modified": "2023-04-22T15:51:33.062Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "69fe54c0-5d5a-41ba-b74f-19f078599241",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get facilities",
+    "url": "{{base_url}}facilities",
+    "method": "GET",
+    "sortNum": 110000,
+    "created": "2023-04-23T06:26:34.740Z",
+    "modified": "2023-04-23T06:26:58.518Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "a75174f9-d2d8-4df7-b478-ee38a7565270",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get departments",
+    "url": "{{base_url}}departments",
+    "method": "GET",
+    "sortNum": 120000,
+    "created": "2023-04-23T06:51:45.216Z",
+    "modified": "2023-04-23T06:55:45.025Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "992be665-d90a-4138-b621-9346d286dff5",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "create referral",
+    "url": "{{base_url}}referral/create",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2023-04-23T08:01:54.330Z",
+    "modified": "2023-04-23T08:08:57.540Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "2f61427b-52eb-4f36-8749-a74ff3f3cee1",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "get referrals",
+    "url": "{{base_url}}referral/all",
+    "method": "GET",
+    "sortNum": 140000,
+    "created": "2023-04-23T08:09:31.851Z",
+    "modified": "2023-04-23T08:10:03.929Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "524b7442-ecc5-44db-9745-7b3381391d31",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "update referral",
+    "url": "{{base_url}}referral/update/1",
+    "method": "POST",
+    "sortNum": 150000,
+    "created": "2023-04-23T08:10:37.007Z",
+    "modified": "2023-04-23T08:12:36.356Z",
+    "headers": [
+      {
+        "name": "TOKEN",
+        "value": "{{token}}"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria tuma\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

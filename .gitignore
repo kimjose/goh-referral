@@ -1,5 +1,4 @@
 vendor/
 .env
 .htaccess
-composer.lock
 mykey.*
