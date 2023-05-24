@@ -52,6 +52,9 @@ $router->mount('/user', function () use ($router) {
     $router->post('/login', function () use ($controller, $data) {
         $controller->login($data);
     });
+    $router->post('/register', function () use ($controller, $data) {
+        $controller->register($data);
+    });
 });
 $router->mount('/patient', function() use ($router) {
     //GET
