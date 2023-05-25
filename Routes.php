@@ -109,12 +109,13 @@ $router->all('/logout', function () {
 });
 
 $router->mount('/web', function () use($router){
-    $controller = new WebController();
-    $router->post('/patient/create', function () use($controller, $router){
+    $router->post('/patient/create', function () use($router){
+        $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->createPatient($data);
     });
-    $router->post('/patient/create/{id}', function ($id) use($controller, $router){
+    $router->post('/patient/create/{id}', function ($id) use($router){
+        $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updatePatient($id, $data);
     });
