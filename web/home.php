@@ -1,10 +1,9 @@
 <?php
 
-use Umb\Mentorship\Models\User;
-use Umb\Mentorship\Models\Facility;
-use Umb\Mentorship\Models\Checklist;
-use Umb\Mentorship\Models\FacilityVisit;
+use Infinitops\Referral\Models\User;
+use Infinitops\Referral\Models\Patient;
 use Illuminate\Database\Capsule\Manager as DB;
+use Infinitops\Referral\Models\PatientReferral;
 
 $thisMonth = date('y-m-01');
 
@@ -14,12 +13,9 @@ date_sub($startDate, date_interval_create_from_date_string("60 days"));
 $startDate = date_format($startDate, 'Y-m-d');
 
 $users = User::all();
-$facilities = DB::select("select f.*, (select COUNT(fv.facility_id) from facility_visits fv where fv.facility_id = f.id GROUP BY fv.facility_id) as visits from facilities f order by visits desc;");
-$checklists = Checklist::where('status', 'published')->get();
-/** @var FacilityVisit[] $periodVisits */
-$periodVisits = FacilityVisit::where('visit_date', '>=', $startDate)->where('visit_date', '<=', $endDate)->orderBy('visit_date', 'asc')->get();
+$patients = Patient::all();
+$referrals = PatientReferral::all();
 
-$responses = DB::select("select r.*, q.category, q.frequency_id from responses r left join questions q on q.id = r.question_id ");
 ?>
 
 <!-- Page Heading -->
@@ -52,14 +48,14 @@ $responses = DB::select("select r.*, q.category, q.frequency_id from responses r
     <!-- small box -->
     <div class="small-box bg-success">
       <div class="inner">
-        <h3><?php echo sizeof($facilities) ?></h3>
+        <h3><?php echo sizeof($patients) ?></h3>
 
-        <p>Facilities</p>
+        <p>Patients</p>
       </div>
       <div class="icon">
         <i class="ion ion-stats-bars"></i>
       </div>
-      <a href="index?page=facilities" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="index?page=patients" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -67,14 +63,14 @@ $responses = DB::select("select r.*, q.category, q.frequency_id from responses r
     <!-- small box -->
     <div class="small-box bg-secondary">
       <div class="inner">
-        <h3><?php echo sizeof($checklists) ?></h3>
+        <h3><?php echo sizeof($referrals) ?></h3>
 
-        <p>Checklists</p>
+        <p>Referrals</p>
       </div>
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="index?page=checklists" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="index?page=referrals" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -82,9 +78,9 @@ $responses = DB::select("select r.*, q.category, q.frequency_id from responses r
     <!-- small box -->
     <div class="small-box bg-warning">
       <div class="inner">
-        <h3><?php echo sizeof($periodVisits) ?></h3>
+        <h3><?php echo '' ?></h3>
 
-        <p>Periods facility visits</p>
+        <p>Active Referrals</p>
       </div>
       <div class="icon">
         <i class="ion ion-person-add"></i>
@@ -226,130 +222,5 @@ $responses = DB::select("select r.*, q.category, q.frequency_id from responses r
 
 
 <script>
-  const startDateString = "<?php echo $startDate; ?>"
-  const endDateString = "<?php echo $endDate; ?>"
-  const visits = JSON.parse('<?php echo $periodVisits ?>');
-  const responses = JSON.parse('<?php echo json_encode($responses) ?>')
-
-  function drawResponseDonut() {
-    let canvasResponse = $('#canvasResponse').get(0).getContext('2d')
-    let labels = ['Facility', 'SDP', 'Individual']
-    let data = [0, 0, 0]
-    responses.forEach(response => {
-      if (response.category === 'facility') data[0]++
-      if (response.category === 'sdp') data[1]++
-      if (response.category === 'individual') data[2]++
-    })
-    let pieData = {
-      labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: ['#f56954', '#00a65a', '#f39c12']
-      }]
-    }
-    var pieOptions = {
-      legend: {
-        display: false
-      },
-      maintainAspectRatio: false,
-      responsive: true
-    }
-    let pieChart = new Chart(canvasResponse, { // lgtm[js/unused-local-variable]
-      type: 'doughnut',
-      data: pieData,
-      options: pieOptions
-    })
-  }
-
-  function drawVisitsGraph() {
-
-    console.log(visits);
-    let labels = [];
-    let values = [];
-    let startDate = new Date(startDateString)
-    let endDate = new Date(endDateString)
-    let diff = (endDate - startDate) / (24 * 3600 * 1000)
-
-    for (let i = 0; i <= diff; i++) {
-      let mDate = new Date(startDate.getTime() + (i * (24 * 3600 * 1000)))
-      let label = DateFormatter.formatDate(mDate, 'MM/DD')
-      labels.push(label)
-      let dayVisits = visits.filter((visit) => {
-        return visit.visit_date === DateFormatter.formatDate(mDate, 'yyyy-MM-DD')
-      })
-      values.push(dayVisits.length);
-    }
-
-    let ticksStyle = {
-      fontColor: '#495057',
-      fontStyle: 'bold'
-    }
-    let mode = 'index'
-    let intersect = true
-    let $visitorsChart = $('#graphVisitsOverTime')
-    // eslint-disable-next-line no-unused-vars
-    let visitorsChart = new Chart($visitorsChart, {
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'visits',
-          type: 'line',
-          data: values,
-          backgroundColor: 'transparent',
-          borderColor: '#007bff',
-          pointBorderColor: '#007bff',
-          pointBackgroundColor: '#007bff',
-          fill: false
-          // pointHoverBackgroundColor: '#007bff',
-          // pointHoverBorderColor    : '#007bff'
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        tooltips: {
-          mode: mode,
-          intersect: intersect
-        },
-        hover: {
-          mode: mode,
-          intersect: intersect
-        },
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: "No. of Visits",
-            },
-            gridLines: {
-              display: true,
-              lineWidth: '4px',
-              color: 'rgba(0, 0, 0, .2)',
-              zeroLineColor: 'transparent'
-            },
-            ticks: $.extend({
-              beginAtZero: true,
-              suggestedMax: 10
-            }, ticksStyle)
-          }],
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: "Dates",
-            },
-            display: true,
-            gridLines: {
-              display: false
-            },
-            ticks: ticksStyle
-          }]
-        }
-      }
-    })
-  }
-
-  drawVisitsGraph()
-  drawResponseDonut()
+  
 </script>
