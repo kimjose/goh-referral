@@ -3,17 +3,14 @@
 /**
  * @var Umb\Mentorship\Models\User $currUser
  */
-if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
-?>
-	<script>
-		window.location.replace("index")
-	</script>
-<?php
-endif;
 
-use Umb\Mentorship\Models\Facility;
-use Umb\Mentorship\Models\User;
-use Umb\Mentorship\Models\UserCategory;
+use Infinitops\Referral\Models\User;
+use Infinitops\Referral\Models\Facility;
+use Infinitops\Referral\Models\UserCategory;
+
+?>
+<?php
+
 
 $id = '';
 if (isset($_GET['id'])) {
