@@ -69,7 +69,7 @@ class WebController
             $patient = Patient::find($id);
             if ($patient == null) throw new \Exception("Patient not found.");
             $patient->update($data);
-            response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
+            response(SUCCESS_RESPONSE_CODE, "Patient updated successfully.", $patient);
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

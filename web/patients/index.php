@@ -72,8 +72,8 @@ $patients = Patient::all();
                                     Action <span class="sr-only">Toggle Drropdown</span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="https://psms.mgickenya.org/psms/web?page=user_order/view_uo&amp;id=2373">
-                                        <span class="fa fa-eye text-primary"></span> View
+                                    <a class="dropdown-item" href="index?page=patients-edit&id=<?php echo $patient->id ?>">
+                                        <span class="fa fa-edit text-primary"></span> Edit
                                     </a>
                                 </div>
                             </td>
