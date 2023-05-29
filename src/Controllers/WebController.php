@@ -4,6 +4,7 @@ namespace Infinitops\Referral\Controllers;
 
 use Infinitops\Referral\Models\Patient;
 use Infinitops\Referral\Controllers\Utils\Utility;
+use Infinitops\Referral\Models\PatientReferral;
 
 class WebController
 {
@@ -75,4 +76,22 @@ class WebController
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
         }
     }
+
+    public function updateReferralStatus($data){
+        try{
+            $attributes = ['status', 'id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $referral = PatientReferral::find($data['id']);
+            if($referral == null) throw new \Exception("Invalid data");
+            $referral->status = $data['status'];
+            $referral->updated_by = $this->user->id;
+            $referral->save();
+            response(SUCCESS_RESPONSE_CODE, "Updated successfully");
+        }  catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
 }

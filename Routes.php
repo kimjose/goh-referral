@@ -119,6 +119,11 @@ $router->mount('/web', function () use($router){
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updatePatient($id, $data);
     });
+    $router->post('/referral/update-status', function(){
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateReferralStatus($data);
+    });
 });
 
 // Thunderbirds are go!
