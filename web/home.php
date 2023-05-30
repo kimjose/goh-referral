@@ -15,7 +15,7 @@ $startDate = date_format($startDate, 'Y-m-d');
 $users = User::all();
 $patients = Patient::all();
 $referrals = PatientReferral::all();
-
+$activeReferrals = PatientReferral::where('status', 'active')->get();
 ?>
 
 <!-- Page Heading -->
@@ -78,21 +78,38 @@ $referrals = PatientReferral::all();
     <!-- small box -->
     <div class="small-box bg-warning">
       <div class="inner">
-        <h3><?php echo '' ?></h3>
+        <h3><?php echo sizeof($activeReferrals) ?></h3>
 
         <p>Active Referrals</p>
       </div>
       <div class="icon">
         <i class="ion ion-person-add"></i>
       </div>
-      <a href="index?page=visits" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="index?page=referrals" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
 
 </div>
 <!-- /top row boxes -->
+<div class="row">
+<div class="col-lg-6 mb-2">
 
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Patient Categorization by Age
+            and Gender</h6>
+        
+    </div>
+    <div class="card-body">
+        <div class="chart-area">
+            <canvas id="patientCategorization"></canvas>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
 
 
 <script>
