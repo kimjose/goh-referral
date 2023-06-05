@@ -77,11 +77,11 @@
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-04-21T06:33:29.803Z",
-    "modified": "2023-04-21T06:57:27.970Z",
+    "modified": "2023-06-01T04:31:44.073Z",
     "headers": [
       {
         "name": "TOKEN",
-        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMDYwMTMxLCJleHAiOjE2ODIwNjAzMTEsImRhdGEiOnsiaWQiOjF9fQ.j4UDE87dJECMmbs_OiC-WY4AtONdvVg5x0azxMU_l0vw0kyZGwwrt5P1d3m_bNsW8YUg_ZSn0xkMGz26GQlsqfbawdJo4S6fmW7MvEyYQjicOGq9-xdr50YtQaJFIP-Rh6bnlpdK0sOMMg8qZ3rACTn0lQxl5ZdRdu7_eahirTb6-Tock2u3u5SoO4S1V7AlTGUx_8-Mxx9cV-aY-e56mNLobv17nx4LiqK4wXV6s8gPCacB4gqNZ9zbAp3fqSeAtHlNk2aB5VbriHoJFI3oTrT_88a5mhz5sejR_3I_IRwwjviJ3DyMSCiF7G7xYSgDWlyXaYbDyIRIZjBLOc_ZVA"
+        "value": "{{token}}"
       }
     ],
     "params": [],
@@ -143,7 +143,7 @@
     "headers": [
       {
         "name": "TOKEN",
-        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+        "value": "{{token}}"
       }
     ],
     "params": [],
