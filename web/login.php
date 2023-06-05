@@ -81,15 +81,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 	}
 </style>
 
-<body class="bg-dark">
+<body class="bg-white">
 
 
 	<main id="main">
 
 		<div class="align-self-center w-100">
-			<h4 class="text-white text-center"><b>Jumuia</b></h4>
-			<div id="login-center" class="bg-dark row justify-content-center">
-				<div class="card col-md-4">
+			<!-- <h4 class="text-white text-center"><b>Jumuia</b></h4> -->
+			<div class="text-center mb-2">
+				<img src="assets/img/logo.jpeg" alt="Jumuia" srcset="">
+			</div>
+			<div id="login-center" class=" row justify-content-center">
+				<div class="card col-md-4 m-2">
 					<div class="card-body">
 						<form id="login-form" action="login" method="POST">
 							<div class="form-group">
