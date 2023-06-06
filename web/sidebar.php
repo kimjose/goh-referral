@@ -1,4 +1,4 @@
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-light-green elevation-4">
     <div class="dropdown">
       <a href="javascript:void(0)" class="brand-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
         <span class="brand-image img-circle elevation-3 d-flex justify-content-center align-items-center bg-primary text-white font-weight-500" style="width: 38px;height:50px"><?php echo strtoupper(substr($currUser->first_name, 0, 1) . substr($currUser->last_name, 0, 1)) ?></span>
@@ -26,7 +26,7 @@
 
           <li class="nav-item">
             <a href="./index?page=facilities" class="nav-link nav-facilities">
-              <i class="nav-icon fa fa-building"></i>
+              <img src="assets/img/hospital.png" class="nav-icon" alt="" srcset="">
               <p>
                 Facilities
               </p>
@@ -36,7 +36,7 @@
 
           <li class="nav-item">
             <a href="./index?page=patients" class="nav-link nav-patients">
-              <i class="nav-icon fa fa-building"></i>
+              <img src="assets/img/patients.png" class="nav-icon" alt="" srcset="">
               <p>
                 Patients
               </p>

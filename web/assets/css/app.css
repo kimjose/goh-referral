@@ -1,3 +1,33 @@
-.icon-visit{
+.icon-visit {
     background-image: url("../img/visit.png");
+}
+
+
+.layout-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.layout-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.layout-sm-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.layout-md-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.layout-lg-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.layout-xl-navbar-fixed .wrapper .sidebar-light-green .brand-link:not([class*="navbar"]) {
+    background-color: #fff;
+}
+
+.sidebar-dark-primary .nav-sidebar.nav-legacy>.nav-item>.nav-link.active,
+.sidebar-light-green .nav-sidebar.nav-legacy>.nav-item>.nav-link.active {
+    border-color: #348c02d3;
 }
