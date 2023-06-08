@@ -80,6 +80,7 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                                             <span class="fa fa-times text-danger"></span> Cancelled
                                         </div>
                                     <?php endif; ?>
+                                    <a href="index?page=referrals-view&id=<?php echo $referral->id ?>" class="dropdown-item"> <span class="fa fa-eye text-primary"></span> View </a>
                                 </div>
                             </td>
                         </tr>
