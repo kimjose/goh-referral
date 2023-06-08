@@ -72,7 +72,7 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                                     Action <span class="sr-only">Toggle Drropdown</span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <?php if ($referral->status == 'active') : ?>
+                                    <?php if ($referral->status == 'active' || $referral->status == 'waiting') : ?>
                                         <div class="dropdown-item" onclick="updateStatus('completed', <?php echo $referral->id ?>)">
                                             <span class="fa fa-check text-success"></span> Completed
                                         </div>
