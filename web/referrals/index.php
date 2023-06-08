@@ -65,7 +65,7 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                             <td><?php echo $referral->referral_urgency ?></td>
                             <td><?php echo $referral->created_at ?></td>
                             <td><?php
-                                echo $referral->status == 'active' ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : $cancelledBadge)
+                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : $cancelledBadge)
                                 ?></td>
                             <td>
                                 <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
