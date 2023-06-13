@@ -2,9 +2,10 @@
 
 namespace Infinitops\Referral\Controllers;
 
+use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\Patient;
-use Infinitops\Referral\Controllers\Utils\Utility;
 use Infinitops\Referral\Models\PatientReferral;
+use Infinitops\Referral\Controllers\Utils\Utility;
 
 class WebController
 {
@@ -89,6 +90,20 @@ class WebController
             $referral->save();
             response(SUCCESS_RESPONSE_CODE, "Updated successfully");
         }  catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public static function requestOtp($data){
+        try {
+            $attributes = ['phone_number'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $user = User::where('phone_number', $data['phone_number'])->first();
+            if($user == null) throw new \Exception("User does not exist");
+            
+        } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
         }

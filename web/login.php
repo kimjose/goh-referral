@@ -3,6 +3,7 @@
 <?php
 
 use Infinitops\Referral\Models\User;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 session_start();
 
@@ -58,10 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
 	<?php include('./header.php'); ?>
 	<!-- <?php
-	// if (isset($_SESSION['login_id']))
-		// header("location:index.php?page=home");
+			// if (isset($_SESSION['login_id']))
+			// header("location:index.php?page=home");
 
-	?> -->
+			?> -->
 
 </head>
 <style>
@@ -103,9 +104,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 								<label for="password" class="control-label text-dark">Password</label>
 								<input type="password" id="password" name="password" class="form-control form-control-sm" required>
 							</div>
-						<p class="text-danger"><?php echo $loginError; ?></p>
+							<p class="text-danger"><?php echo $loginError; ?></p>
 							<center><input class="btn-sm btn-block btn-wave col-md-4 btn-primary" name="submit" type="submit" value="Login"></center>
 						</form>
+
+						<div class="text-center">
+							<a class="small" href="forgot_password.php">Forgot Password?</a>
+						</div>
+
 					</div>
 				</div>
 			</div>

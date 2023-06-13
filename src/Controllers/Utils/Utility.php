@@ -155,7 +155,8 @@ class Utility
     {
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
-        $footer = "<hr> <h4>Click <a href='http://psms.mgickenya.org:81/event-management/admin/'>here</a> to open event management application. </h4>";
+        $appUrl = $_ENV['APP_URL'];
+        $footer = "<hr> <h4>Click <a href='{$appUrl}'>here</a> to open event management application. </h4>";
         $body .= $footer;
         try {
             //Server settings
