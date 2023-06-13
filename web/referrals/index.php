@@ -65,14 +65,14 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                             <td><?php echo $referral->referral_urgency ?></td>
                             <td><?php echo $referral->created_at ?></td>
                             <td><?php
-                                echo $referral->status == 'active' ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : $cancelledBadge)
+                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : $cancelledBadge)
                                 ?></td>
                             <td>
                                 <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                     Action <span class="sr-only">Toggle Drropdown</span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <?php if ($referral->status == 'active') : ?>
+                                    <?php if ($referral->status == 'active' || $referral->status == 'waiting') : ?>
                                         <div class="dropdown-item" onclick="updateStatus('completed', <?php echo $referral->id ?>)">
                                             <span class="fa fa-check text-success"></span> Completed
                                         </div>
@@ -80,6 +80,7 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                                             <span class="fa fa-times text-danger"></span> Cancelled
                                         </div>
                                     <?php endif; ?>
+                                    <a href="index?page=referrals-view&id=<?php echo $referral->id ?>" class="dropdown-item"> <span class="fa fa-eye text-primary"></span> View </a>
                                 </div>
                             </td>
                         </tr>

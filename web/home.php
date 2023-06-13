@@ -15,7 +15,7 @@ $startDate = date_format($startDate, 'Y-m-d');
 $users = User::all();
 $patients = Patient::all();
 $referrals = PatientReferral::all();
-$activeReferrals = PatientReferral::where('status', 'active')->get();
+$activeReferrals = PatientReferral::where('status', 'active')->orWhere('status', 'waiting')->get();
 ?>
 
 <!-- Page Heading -->
