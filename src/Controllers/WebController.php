@@ -2,6 +2,7 @@
 
 namespace Infinitops\Referral\Controllers;
 
+use Infinitops\Referral\Models\Otp;
 use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\Patient;
 use Infinitops\Referral\Models\PatientReferral;
@@ -102,7 +103,21 @@ class WebController
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
             $user = User::where('phone_number', $data['phone_number'])->first();
             if($user == null) throw new \Exception("User does not exist");
-            
+
+            $otp = Otp::where('user_id', $user->id)->where('is_used', 0)->where('expires_at', '>', date('Y-m-d H:i:s'))->first();
+            if($otp == null) {
+                $d = date("Y-m-d G:i:s");
+                $expirely = date("Y-m-d G:i:s", strtotime($d .' + 10 minute'));
+                $otp = Otp::create([
+                    "user_id" => $user->id,
+                    "pin" => rand(1000, 9999),
+                    "expires_at" => $expirely
+                ]);
+            }
+            $recipient['address'] = $user->email;
+            $recipient['name'] = $user->username;
+            $recipients[] = $recipient;
+            Utility::sendMail($recipients, "System OTP", "Hello {$user->first_name}, Your OTP for Systems backup is {$otp->pin }. The OTP expires at {$otp->expires_at} ");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

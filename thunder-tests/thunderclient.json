@@ -290,5 +290,43 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "66e0a391-c152-43c0-a9dc-2fd0d2d321b2",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "request otp",
+    "url": "{{base_url}}request-otp",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2023-06-19T03:02:51.685Z",
+    "modified": "2023-06-19T03:04:46.179Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"phone_number\": \"0717845485\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "038be2f3-07ca-4f4f-943d-db3c1a0f34d3",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "reset password",
+    "url": "{{base_url}}reset-password",
+    "method": "POST",
+    "sortNum": 170000,
+    "created": "2023-06-19T03:44:34.731Z",
+    "modified": "2023-06-19T03:53:48.885Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"pin\": 7424,\n  \"password\": \"admin123\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
