@@ -73,11 +73,31 @@
         formForgotPassword.addEventListener('submit', e => {
             e.preventDefault();
             let phoneNumber = inputPhoneNumber.value.trim()
-            if(phoneNumber.length < 10){
+            if (phoneNumber.length < 10) {
                 toastr.error('Your phone number is invalid')
                 return
             }
-            fetch()
+            fetch('../request-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        phone_number: phoneNumber
+                    }),
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded"
+                    }
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(response => {
+                    if (response.code == 200) {
+                        setTimeout(() => {
+                            location.replace(`forgot_password_reset?phone_number=${phoneNumber}`)
+                        })
+                    } else throw new Exception(response.message)
+                }).catch(err => {
+                    alert(err.message);
+                })
         })
     </script>
 
