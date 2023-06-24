@@ -2,9 +2,16 @@
 <html lang="en">
 
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Infinitops\Referral\Models\User;
+
 $phoneNumber = '';
 if (isset($_GET['phone_number'])) $phoneNumber = $_GET['phone_number'];
 if ($phoneNumber == '')
+    header('location:  forgot_password.php');
+$user = User::where('phone_number', $phoneNumber)->first();
+if ($user == null)
     header('location:  forgot_password.php');
 
 ?>
@@ -53,6 +60,7 @@ if ($phoneNumber == '')
             </div>
             <div id="" class=" row justify-content-center">
                 <div class="card col-md-4 m-2">
+                    <p class="text-center">An OTP has been sent to email <?php echo $user->email; ?></p>
                     <div class="card-body">
                         <form id="formForgotPasswordReset" action="" method="POST" onsubmit="event.preventDefault()">
                             <div class="form-group">
@@ -70,7 +78,7 @@ if ($phoneNumber == '')
                                 <input type="password" id="inputPasswordConfirm" name="password_confirm" class="form-control form-control-sm" required onchange="passwordChange()">
                             </div>
                             <p class="text-danger"></p>
-                            <center><input class="btn-sm btn-block btn-wave col-md-4 btn-primary" id="btnSubmit" name="submit" type="submit" value="Get OTP"></center>
+                            <center><input class="btn-sm btn-block btn-wave col-md-4 btn-primary" id="btnSubmit" name="submit" type="submit" value="Reset Password" onchange="passwordChange()"></center>
                         </form>
 
                         <div class="text-center">
@@ -86,14 +94,16 @@ if ($phoneNumber == '')
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
     <style>
-        .password-mismatch{
-            border-top: 1px solid #ff0066;
+        .password-mismatch {
+            border-top: 4px solid #ff0006 !important;
         }
+
+        .password-mismatch:hover {}
     </style>
 
     <script type="text/javascript">
         const formForgotPasswordReset = document.getElementById('formForgotPasswordReset')
-        const inputPhoneNumber = document.getElementById('inputPhoneNumber')
+        const phoneNumber = '<?php echo $phoneNumber; ?>'
 
         const inputOtp = document.getElementById('inputOtp')
         const inputPassword = document.getElementById('inputPassword')
@@ -104,17 +114,47 @@ if ($phoneNumber == '')
             let otp = inputOtp.value
             let password = inputPassword.value
             let passwordConfirm = inputPasswordConfirm.value
-            fetch()
+            if(password != passwordConfirm){
+                alert("Passwords do not match")
+                return
+            }
+            fetch("../reset-password", {
+                method: 'POST',
+                body: JSON.stringify({
+                    phone_number: phoneNumber, pin: otp, password: password
+                }),
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded"
+                }
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(response => {
+                if(response.code == 200){
+                    console.log("Password reset successfully...");
+                    setTimeout(() => {
+                        location.replace("login")
+                    }, 978)
+                 } else{
+                    console.log(response)
+                    throw new Error(response.message)
+                 } 
+            })
+            .catch(error => {
+                alert(error.message)
+            })
         })
 
         const passwordChange = (e) => {
             let password = inputPassword.value
             let passwordConfirm = inputPasswordConfirm.value
-            if(passwordConfirm != ""){
-                if(password != passwordConfirm){
-                    if(!inputPasswordConfirm.classList.contains('password-mismatch')) inputPasswordConfirm.classList.add('password-mismatch')
-                } else{
-                    if(inputPasswordConfirm.classList.contains('password-mismatch')) inputPasswordConfirm.classList.remove('password-mismatch')
+            console.log("Method called");
+            if (passwordConfirm != "") {
+                if (password != passwordConfirm) {
+                    if (!inputPasswordConfirm.classList.contains('password-mismatch')) inputPasswordConfirm.classList.add('password-mismatch')
+                } else {
+                    if (inputPasswordConfirm.classList.contains('password-mismatch')) inputPasswordConfirm.classList.remove('password-mismatch')
                 }
             }
         }
