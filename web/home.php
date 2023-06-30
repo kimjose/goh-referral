@@ -113,5 +113,86 @@ $activeReferrals = PatientReferral::where('status', 'active')->orWhere('status',
 
 
 <script>
-  
+  const patients = JSON.parse('<?php echo json_encode($patients) ?>')
+  const patientCategorization = document.getElementById('patientCategorization')
+
+  function drawPatientsCategorization() {
+    let maleCat1 = 0
+    let maleCat2 = 0
+    let femaleCat1 = 0
+    let femaleCat2 = 0
+
+    patients.forEach(patient => {
+      let age = calculateAge(new Date(patient.dob))
+      if(age < 15){
+        if(patient.gender == 'male') maleCat1++; else femaleCat1++
+      } else{
+        if(patient.gender == 'male') maleCat2++; else femaleCat2++
+      }
+    })
+    
+    const dataChartBarDoubleDatasetsExample = new Chart(patientCategorization, {
+        type: 'bar',
+        data: {
+            labels: ["<15 years", "15+ years"],
+
+            datasets: [
+                {
+                    label: 'Male',
+                    data: [maleCat1, maleCat2],
+                    backgroundColor: '#3895D3',
+                    borderColor: '#3895D3',
+                },
+                {
+                    label: 'Female',
+                    data: [femaleCat1, femaleCat2],
+                    backgroundColor: '#980147',
+                    borderColor: '#980147',
+                },
+            ],
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Age Range",
+                        },
+                        gridLines: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "No. of Patients",
+                        },
+                        ticks: {
+                            min: 0,
+                            maxTicksLimit: 6,
+                        },
+                        gridLines: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                ]
+            }
+        },
+    });
+
+  }
+
+  function calculateAge(dob) {
+    let now = new Date();
+    let age_diff = now.getTime() - dob.getTime();
+
+    return Math.floor(age_diff / (1000 * 60 * 60 * 24 * 365.25));
+}
+
+
+  drawPatientsCategorization()
 </script>
