@@ -113,6 +113,10 @@ $router->all('/logout', function () {
 
 
 $router->mount('/web', function () use ($router) {
+    $router->get('/get_map_data', function () {
+        $controller = new WebController();
+        response(200, "map_data", $controller->getMapData());
+    });
     $router->post('/user_category/create', function () {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);

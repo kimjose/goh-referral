@@ -4,7 +4,9 @@ namespace Infinitops\Referral\Controllers;
 
 use Infinitops\Referral\Models\Otp;
 use Infinitops\Referral\Models\User;
+use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Patient;
+use Infinitops\Referral\Models\Facility;
 use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\PatientReferral;
 use Infinitops\Referral\Controllers\Utils\Utility;
@@ -194,6 +196,49 @@ class WebController
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+
+    /***
+     *
+     * return data to populate the map
+     *
+     */
+    public function getMapData() {
+        try {
+            $patients = Patient::all();
+
+            $facilities = [];
+            $counties = [];
+            $countyNames = [];
+            $data = [];
+            foreach ($patients as $patient) {
+                $county = $patient->county();
+                if (!in_array($county->name, $countyNames)) {
+                    array_push($counties, $county);
+                    array_push($countyNames, $county->name);
+                }
+            }
+
+            foreach ($counties as $county) {
+                $cdata = [];
+                $cdata['County'] = strtoupper($county->name);
+                $cdata['Location'] = '(' . $county->latitude . ', ' . $county->longitude . ')';
+                $facilities = Facility::where('county_code', $county->code)->get();
+                $cdata['Facilities'] = sizeof($facilities);
+
+                $totalpatients = Patient::where('county_code', $county->code)->get();
+                $cdata['Patients'] = sizeof($totalpatients);
+
+                array_push($data, $cdata);
+            }
+
+            return $data;
+
+        } catch (\Throwable $e) {
+            Utility::logError($e->getCode(), $e->getMessage());
+            return ["error" =>$e->getMessage()];
         }
     }
 
