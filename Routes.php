@@ -45,6 +45,10 @@ $router->mount('/user', function () use ($router) {
     $router->get('/all', function () use ($controller) {
         $controller->getUsers();
     });
+    $router->get('/user_categories', function () use ($controller) {
+        $controller->getUserCategories();
+    });
+    
     // POST Requests
     $data = json_decode(file_get_contents('php://input'), true);
     $router->post('/create', function () use ($controller, $data) {

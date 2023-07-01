@@ -7,6 +7,8 @@ use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\UserToken;
 use Infinitops\Referral\Controllers\Utils\Utility;
 use Infinitops\Referral\Controllers\Controller;
+use Infinitops\Referral\Models\UserCategory;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class UsersController extends Controller
 {
@@ -120,6 +122,11 @@ class UsersController extends Controller
             if ($th->getCode() == 23000) response(PRECONDITION_FAILED_ERROR_CODE, "User already exists. Email | Phonenumber found");
             else response(PRECONDITION_FAILED_ERROR_CODE, $th->getCode() . $th->getMessage());
         }
+    }
+
+    public function getUserCategories(){
+        $userCategories = DB::select("select * from user_categories uc where '1' in (uc.permissions);");
+        response(SUCCESS_RESPONSE_CODE, "User categories", $userCategories);
     }
 
     public function getLoggedInUser(){
