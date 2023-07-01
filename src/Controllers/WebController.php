@@ -5,6 +5,7 @@ namespace Infinitops\Referral\Controllers;
 use Infinitops\Referral\Models\Otp;
 use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\Patient;
+use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\PatientReferral;
 use Infinitops\Referral\Controllers\Utils\Utility;
 
@@ -37,6 +38,37 @@ class WebController
             }
         }
     }
+
+    public function createUserCategory($data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ["name", "description", "permissions"];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $data['created_by'] = $this->user->id;
+            UserCategory::create($data);
+            response(SUCCESS_RESPONSE_CODE, "The user category created successfully.");
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function updateUserCategory($id, $data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ["name", "description", "permissions"];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $userCategory = UserCategory::findOrFail($id);
+            $userCategory->update($data);
+            response(SUCCESS_RESPONSE_CODE, "The user category updated successfully.");
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
 
     public function createPatient($data)
     {
