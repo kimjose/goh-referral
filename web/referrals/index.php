@@ -5,10 +5,10 @@ use Infinitops\Referral\Models\PatientReferral;
 $referrals = PatientReferral::all();
 
 $activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
+$referredBadge = "<span class=\"badge badge-warning rounded-pill\">Referred Elsewhere</span>";
 $completedBadge = "<span class=\"badge badge-success rounded-pill\">Completed</span>";
 $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</span>";
 ?>
-
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between">
@@ -65,7 +65,7 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                             <td><?php echo $referral->referral_urgency ?></td>
                             <td><?php echo $referral->created_at ?></td>
                             <td><?php
-                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : $cancelledBadge)
+                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : ($referral->status == 'referred' ? $referredBadge : $cancelledBadge))
                                 ?></td>
                             <td>
                                 <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
