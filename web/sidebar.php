@@ -44,41 +44,49 @@
               </p>
             </a>
           </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link nav-edit_user">
-                <i class="nav-icon fas fa-users"></i>
-                <p>
-                  Users
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="./index?page=users-edit" class="nav-link nav-users-edit tree-item">
-                    <i class="fas fa-angle-right nav-icon"></i>
-                    <p>Add New</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="./index?page=users" class="nav-link nav-users tree-item">
-                    <i class="fas fa-angle-right nav-icon"></i>
-                    <p>List</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="./index?page=users-categories" class="nav-link nav-users-categories tree-item">
-                    <i class="fas fa-angle-right nav-icon"></i>
-                    <p>Categories</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_user">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Users
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index?page=users-edit" class="nav-link nav-users-edit tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Add New</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=users" class="nav-link nav-users tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=users-categories" class="nav-link nav-users-categories tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Categories</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
-            <li class="nav-item">
+          <li class="nav-item">
             <a href="./index?page=facilities" class="nav-link nav-facilities">
               <img src="assets/img/hospital.png" class="nav-icon" alt="" srcset="">
               <p>
                 Facilities
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="./index?page=departments" class="nav-link nav-departments">
+              <img src="assets/img/department.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Departments
               </p>
             </a>
           </li>

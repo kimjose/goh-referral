@@ -10,6 +10,7 @@ use Infinitops\Referral\Models\Facility;
 use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\PatientReferral;
 use Infinitops\Referral\Controllers\Utils\Utility;
+use Infinitops\Referral\Models\Department;
 
 class WebController
 {
@@ -242,8 +243,6 @@ class WebController
         }
     }
 
-
-
     public function createFacility($data){
         try {
             if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
@@ -274,6 +273,41 @@ class WebController
             $facility->county_code = $data['county_code'];
             $facility->save();
             response(SUCCESS_RESPONSE_CODE, "The facility has been updated successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+
+    public function createDepartment($data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Department::where('name', $data['name'])->first();
+            throw_if($exists != null, new \Exception("Department already exists.", -1));
+            Department::create($data);
+            response(SUCCESS_RESPONSE_CODE, "The department has been added successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function updateDepartment($id, $data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Department::where('name', $data['name'])->where('id','!=', $id)->first();
+            throw_if($exists != null, new \Exception("Department already exists.", -1));
+            $department = Department::findOrFail($id);
+            $department->name = $data['name'];
+            $department->save();
+            response(SUCCESS_RESPONSE_CODE, "The department has been updated successfully");
         } catch (\Throwable $th){
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
