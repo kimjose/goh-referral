@@ -19,32 +19,9 @@ if (isset($_GET['id'])) {
 }
 
 /** @var Facility[] $facilities */
-$facilities = Facility::where('active', 1)->orderBy('name', 'asc')->get();
-$categories = [];
-if ($currUser->getCategory()->access_level == 'Facility') {
-	$allCategories = UserCategory::where('access_level', 'Facility')->get();
-	$userPermissions = explode(',', $currUser->getCategory()->permissions);
-	foreach ($allCategories as $category) {
-		$categoryPermissions = explode(',', $category->permissions);
-		$allowed = true;
-		foreach ($categoryPermissions as $categoryPermission) {
-			if (!in_array($categoryPermission, $userPermissions)) $allowed = false;
-		}
-		if ($allowed) $categories[] = $category;
-	}
-} else {
-	$allCategories = UserCategory::all();
-	$userPermissions = explode(',', $currUser->getCategory()->permissions);
-	// print_r($userPermissions);
-	foreach ($allCategories as $category) {
-		$categoryPermissions = explode(',', $category->permissions);
-		$allowed = true;
-		foreach ($categoryPermissions as $categoryPermission) {
-			if (!in_array($categoryPermission, $userPermissions)) $allowed = false;
-		}
-		if ($allowed) $categories[] = $category;
-	}
-}
+$facilities = Facility::orderBy('name', 'asc')->get();
+$categories = UserCategory::all();
+
 ?>
 <div class="col-lg-12">
 	<div class="card">
@@ -54,6 +31,11 @@ if ($currUser->getCategory()->access_level == 'Facility') {
 				<div class="row">
 					<div class="col-md-6 border-right">
 						<b class="text-muted">Personal Information</b>
+
+						<div class="form-group">
+							<label for="" class="control-label">Surname</label>
+							<input type="text" name="surname" class="form-control form-control-sm" required value="<?php echo $id != '' ? $u->surname : '' ?>">
+						</div>
 						<div class="form-group">
 							<label for="" class="control-label">First Name</label>
 							<input type="text" name="first_name" class="form-control form-control-sm" required value="<?php echo $id != '' ? $u->first_name : '' ?>">
@@ -62,35 +44,14 @@ if ($currUser->getCategory()->access_level == 'Facility') {
 							<label for="" class="control-label">Middle Name</label>
 							<input type="text" name="middle_name" class="form-control form-control-sm" value="<?php echo $id != '' ? $u->middle_name : '' ?>">
 						</div>
-						<div class="form-group">
-							<label for="" class="control-label">Last Name</label>
-							<input type="text" name="last_name" class="form-control form-control-sm" required value="<?php echo $id != '' ? $u->last_name : '' ?>">
-						</div>
-						<div class="form-group">
-							<label for="">Access Level</label>
-							<select name="access_level" id="selectAccessLevel" class="form-control" onchange="accessLevelChanged()">
-								<option value="" <?php echo $id == '' ? 'selected' : '' ?> hidden>Select level</option>
-								<option value="Program" <?php echo ($id != '' && $u->getCategory()->access_level == 'Program') ? 'selected' : '' ?>>Program</option>
-								<option value="Facility" <?php echo ($id != '' && $u->getCategory()->access_level == 'Facility') ? 'selected' : '' ?>>Facility</option>
-							</select>
-						</div>
+
 						<div class="form-group">
 							<label for="selectCategory">User category</label>
 							<select name="category_id" id="selectCategory" class="form-control select2">
 								<option value="" hidden selected>Select access level first</option>
-								<?php if ($id != '') :
-									foreach ($categories as $category) : ?>
-										<option value="<?php echo $category->id ?>" <?php echo $category->id === $u->category_id ? ' selected' : '' ?>> <?php echo $category->name ?> </option>
-								<?php endforeach;
-								endif; ?>
-							</select>
-						</div>
-						<div class="form-group <?php echo ($id !== '' && $u->getCategory()->access_level != 'Facility') ? 'd-none' : '' ?>" id="divSelectFacility">
-							<label for="">Facility</label>
-							<select name="facility_id" id="selectFacility" class="form-control">
-								<option value="" <?php echo $id == '' ? 'selected' : '' ?> hidden>Select facility</option>
-								<?php foreach ($facilities as $facility) : ?>
-									<option value="<?php echo $facility->id ?>" <?php echo ($id != '' && $u->facility_id == $facility->id) ? 'selected' : '' ?>><?php echo $facility->name ?></option>
+								<?php
+								foreach ($categories as $category) : ?>
+									<option value="<?php echo $category->id ?>" <?php echo $category->id === $u->category_id ? ' selected' : '' ?>> <?php echo $category->name ?> </option>
 								<?php endforeach; ?>
 							</select>
 						</div>
@@ -130,8 +91,6 @@ if ($currUser->getCategory()->access_level == 'Facility') {
 <script>
 	const formManageUser = document.querySelector('#manage_user')
 	const selectCategory = document.querySelector('#selectCategory')
-	const selectAccessLevel = document.querySelector('#selectAccessLevel')
-	const divSelectFacility = document.querySelector('#divSelectFacility')
 	const btnSave = document.querySelector('#btnSave')
 	const id = '<?php echo $id ?>'
 	const categories = JSON.parse('<?php echo json_encode($categories) ?>')
@@ -181,7 +140,7 @@ if ($currUser->getCategory()->access_level == 'Facility') {
 			userData[key] = value
 		}
 
-		fetch(id == '' ? '../api/user' : `../api/user/${id}`, {
+		fetch(id == '' ? 'user/create' : `user/update/${id}`, {
 				method: 'POST',
 				body: JSON.stringify(userData),
 				headers: {
@@ -205,30 +164,4 @@ if ($currUser->getCategory()->access_level == 'Facility') {
 				toastr.error(error.message)
 			})
 	})
-
-	function accessLevelChanged() {
-		let selected = $(selectAccessLevel).val();
-		selectCategory.innerHTML = '<option value="" selected hidden>Select Category</option>';
-		if (selected === "Program") {
-			divSelectFacility.classList.add("d-none")
-			categories.forEach(category => {
-				if (category.access_level === 'Program') {
-					let option = document.createElement('option');
-					option.value = category.id
-					option.innerText = category.name
-					selectCategory.append(option)
-				}
-			})
-		} else if (selected === "Facility") {
-			categories.forEach(category => {
-				if (category.access_level === 'Facility') {
-					let option = document.createElement('option');
-					option.value = category.id
-					option.innerText = category.name
-					selectCategory.append(option)
-				}
-			})
-			if (divSelectFacility.classList.contains('d-none')) divSelectFacility.classList.remove('d-none')
-		}
-	}
 </script>

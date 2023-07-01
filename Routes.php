@@ -128,7 +128,16 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateReferralStatus($data);
     });
-
+    $router->post('/user/create', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->createUser($data);
+    });
+    $router->post('/user/update/{id}', function ($id) {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateUser($id, $data);
+    });
     $router->post('/request-otp', function () {
         $data = json_decode(file_get_contents('php://input'), true);
         WebController::requestOtp($data);

@@ -124,4 +124,45 @@ class WebController
         }
     }
 
+    public function createUser($data)
+    {
+        try {
+            $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            if ($data['password'] == '') {
+                unset($data['password']);
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            $user = User::create($data);
+            response(SUCCESS_RESPONSE_CODE, "User Created successfully.", $user);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            if ($th->getCode() == 23000) response(PRECONDITION_FAILED_ERROR_CODE, "User already exists. Email | Phonenumber found");
+            else response(PRECONDITION_FAILED_ERROR_CODE, $th->getCode() . $th->getMessage());
+        }
+    }
+
+    public function updateUser($id, $data)
+    {
+        try {
+            $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            if ($data['password'] == '') {
+                unset($data['password']);
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            $user = User::find($id);
+            if ($user == null) throw new \Exception('User not found', -1);
+            $user->update($data);
+            response(SUCCESS_RESPONSE_CODE, "User updated successfully", $user);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
 }
