@@ -6,7 +6,7 @@
 
       </a>
       <div class="dropdown-menu">
-        <a class="dropdown-item manage_account" href="javascript:void(0)" data-id="<?php echo $currUser->id ?>">Manage Account</a>
+        <a class="dropdown-item manage_account" href="index?page=user_profile" data-id="<?php echo $currUser->id ?>">Manage Account</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
       </div>

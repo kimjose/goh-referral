@@ -200,6 +200,30 @@ class WebController
         }
     }
 
+    public function updateUserProfile($id, $data)
+    {
+        try {
+            $attributes = ['surname', 'email', 'phone_number', 'first_name', 'middle_name', 'password'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $user = User::findOrFail($id);
+            $user->email = $data['email'];
+            $user->phone_number = $data['phone_number'];
+            $user->first_name = $data['first_name'];
+            $user->middle_name = $data['middle_name'];
+            $user->surname = $data['surname'];
+            if ($data['password'] != '') {
+                $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+                $user->password = $hashedPassword;
+            }
+            $user->save();
+            response(SUCCESS_RESPONSE_CODE, "User profile updated successfully");
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
 
     /***
      *

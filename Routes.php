@@ -152,6 +152,11 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateUser($id, $data);
     });
+    $router->post('/update_user_profile/{id}', function ($id) {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateUserProfile($id, $data);
+    });
     $router->post('/department/create', function () {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
