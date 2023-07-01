@@ -152,6 +152,17 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateUser($id, $data);
     });
+
+    $router->post('/facility/create', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->createFacility($data);
+    });
+    $router->post('/facility/update/{id}', function ($id) {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateFacility($id, $data);
+    });
     $router->post('/request-otp', function () {
         $data = json_decode(file_get_contents('php://input'), true);
         WebController::requestOtp($data);

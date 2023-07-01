@@ -24,14 +24,6 @@
 
           </li>
 
-          <li class="nav-item">
-            <a href="./index?page=facilities" class="nav-link nav-facilities">
-              <img src="assets/img/hospital.png" class="nav-icon" alt="" srcset="">
-              <p>
-                Facilities
-              </p>
-            </a>
-          </li>
 
 
           <li class="nav-item">
@@ -82,6 +74,14 @@
               </ul>
             </li>
 
+            <li class="nav-item">
+            <a href="./index?page=facilities" class="nav-link nav-facilities">
+              <img src="assets/img/hospital.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Facilities
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
