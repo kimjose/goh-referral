@@ -7,6 +7,8 @@ use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\UserToken;
 use Infinitops\Referral\Controllers\Utils\Utility;
 use Infinitops\Referral\Controllers\Controller;
+use Infinitops\Referral\Models\UserCategory;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class UsersController extends Controller
 {
@@ -24,8 +26,8 @@ class UsersController extends Controller
             } else {
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
             }
-            User::create($data);
-            response(SUCCESS_RESPONSE_CODE, "User Created successfully.");
+            $user = User::create($data);
+            response(SUCCESS_RESPONSE_CODE, "User Created successfully.", $user);
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             if ($th->getCode() == 23000) response(PRECONDITION_FAILED_ERROR_CODE, "User already exists. Email | Phonenumber found");
@@ -48,7 +50,7 @@ class UsersController extends Controller
             $user = User::find($id);
             if ($user == null) throw new \Exception('User not found', -1);
             $user->update($data);
-            response(SUCCESS_RESPONSE_CODE, "User updated successfully");
+            response(SUCCESS_RESPONSE_CODE, "User updated successfully", $user);
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
@@ -101,6 +103,30 @@ class UsersController extends Controller
             response(UNAUTHORIZED_ERROR_CODE, "Unable to login. Try again later::" . $th->getMessage());
             http_response_code(UNAUTHORIZED_ERROR_CODE);
         }
+    }
+
+    public function register($data){
+        try {
+            $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            if ($data['password'] == '') {
+                unset($data['password']);
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            $user = User::create($data);
+            response(SUCCESS_RESPONSE_CODE, "User account Created successfully.", $user);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            if ($th->getCode() == 23000) response(PRECONDITION_FAILED_ERROR_CODE, "User already exists. Email | Phonenumber found");
+            else response(PRECONDITION_FAILED_ERROR_CODE, $th->getCode() . $th->getMessage());
+        }
+    }
+
+    public function getUserCategories(){
+        $userCategories = DB::select("select * from user_categories uc where '1' in (uc.permissions);");
+        response(SUCCESS_RESPONSE_CODE, "User categories", $userCategories);
     }
 
     public function getLoggedInUser(){

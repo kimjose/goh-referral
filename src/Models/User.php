@@ -8,4 +8,9 @@ class User extends Model{
     protected $fillable = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id', 'last_login'];
 
     protected $hidden = ['password'];
+
+    /** @return UserCategory */
+    public function getCategory(){
+        return UserCategory::find($this->category_id);
+    }
 }

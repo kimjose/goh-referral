@@ -77,11 +77,11 @@
     "method": "GET",
     "sortNum": 40000,
     "created": "2023-04-21T06:33:29.803Z",
-    "modified": "2023-04-21T06:57:27.970Z",
+    "modified": "2023-06-01T04:31:44.073Z",
     "headers": [
       {
         "name": "TOKEN",
-        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMDYwMTMxLCJleHAiOjE2ODIwNjAzMTEsImRhdGEiOnsiaWQiOjF9fQ.j4UDE87dJECMmbs_OiC-WY4AtONdvVg5x0azxMU_l0vw0kyZGwwrt5P1d3m_bNsW8YUg_ZSn0xkMGz26GQlsqfbawdJo4S6fmW7MvEyYQjicOGq9-xdr50YtQaJFIP-Rh6bnlpdK0sOMMg8qZ3rACTn0lQxl5ZdRdu7_eahirTb6-Tock2u3u5SoO4S1V7AlTGUx_8-Mxx9cV-aY-e56mNLobv17nx4LiqK4wXV6s8gPCacB4gqNZ9zbAp3fqSeAtHlNk2aB5VbriHoJFI3oTrT_88a5mhz5sejR_3I_IRwwjviJ3DyMSCiF7G7xYSgDWlyXaYbDyIRIZjBLOc_ZVA"
+        "value": "{{token}}"
       }
     ],
     "params": [],
@@ -143,7 +143,7 @@
     "headers": [
       {
         "name": "TOKEN",
-        "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+        "value": "{{token}}"
       }
     ],
     "params": [],
@@ -287,6 +287,44 @@
     "body": {
       "type": "json",
       "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria tuma\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "66e0a391-c152-43c0-a9dc-2fd0d2d321b2",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "request otp",
+    "url": "{{base_url}}request-otp",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2023-06-19T03:02:51.685Z",
+    "modified": "2023-06-19T03:04:46.179Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"phone_number\": \"0717845485\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "038be2f3-07ca-4f4f-943d-db3c1a0f34d3",
+    "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+    "containerId": "",
+    "name": "reset password",
+    "url": "{{base_url}}reset-password",
+    "method": "POST",
+    "sortNum": 170000,
+    "created": "2023-06-19T03:44:34.731Z",
+    "modified": "2023-06-20T17:22:34.229Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"pin\": 2149,\n  \"password\": \"admin123\"\n}",
       "form": []
     },
     "tests": []

@@ -155,7 +155,8 @@ class Utility
     {
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
-        $footer = "<hr> <h4>Click <a href='http://psms.mgickenya.org:81/event-management/admin/'>here</a> to open event management application. </h4>";
+        $appUrl = $_ENV['APP_URL'];
+        $footer = "<hr> <h4>Click <a href='{$appUrl}'>here</a> to open event management application. </h4>";
         $body .= $footer;
         try {
             //Server settings
@@ -191,10 +192,12 @@ class Utility
             //            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
+            return true;
 //            echo 'Message has been sent';
         } catch (\Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             self::logError($e->getCode(), $e->getMessage());
+            return false;
         }
     }
 

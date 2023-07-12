@@ -4,14 +4,12 @@
 ?>
 <?php
 
-use Illuminate\Database\Capsule\Manager as DB;
 use Umb\Mentorship\Models\Team;
+use Infinitops\Referral\Models\County;
+use Infinitops\Referral\Models\Facility;
 
 /*** @var \Umb\EventsManager\Models\Facility[] $facilities */
-$facilities = DB::select("select f.*, c.name 'county', t.name 'team_name', (select count(fv.facility_id) from facility_visits fv where fv.facility_id = f.id group by fv.facility_id ) as visits from facilities f left join counties c on c.code = f.county_code left join teams t on t.id = f.team_id");
-$activeBadge = "<span class='badge badge-primary rounded-pill'>Active</span>";
-$inActiveBadge = "<span class='badge badge-warning rounded-pill'>In Active</span>";
-$teams = Team::all();
+$facilities = Facility::all();
 ?>
 
 
@@ -42,9 +40,6 @@ $teams = Team::all();
                         <th>Name</th>
                         <th>MFL Code</th>
                         <th>County</th>
-                        <th>Team</th>
-                        <th>Status</th>
-                        <th>Visits</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,9 +49,6 @@ $teams = Team::all();
                         <th>Name</th>
                         <th>MFL Code</th>
                         <th>County</th>
-                        <th>Team</th>
-                        <th>Status</th>
-                        <th>Visits</th>
                         <th>Actions</th>
                     </tr>
                 </tfoot>
@@ -69,12 +61,8 @@ $teams = Team::all();
                             <td><?php echo $i ?></td>
                             <td><?php echo $facility->name ?></td>
                             <td><?php echo $facility->mfl_code  ?></td>
-                            <td><?php echo $facility->county ?></php>
+                            <td><?php echo $facility->county()->name ?></php>
                             </td>
-                            <td><?php echo $facility->team_name ?></php>
-                            </td>
-                            <td><?php echo $facility->active ? $activeBadge : $inActiveBadge ?></td>
-                            <td><?php echo $facility->visits ?? 0 ?></td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-flat" data-tooltip="tooltip" title="Edit Facility" onclick='editFacility(<?php echo json_encode($facility); ?>)' data-toggle="modal" data-target="#modalFacility">
@@ -124,7 +112,7 @@ $teams = Team::all();
                             <option value="" hidden selected>Select County</option>
                             <?php
 
-                            $counties = \Umb\Mentorship\Models\County::all();
+                            $counties = County::all();
                             for ($j = 0; $j < sizeof($counties); $j++) :
                                 $county = $counties[$j];
                             ?>
@@ -132,45 +120,7 @@ $teams = Team::all();
                             <?php endfor; ?>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="selectTeam">Team</label>
-                        <select name="team_id" id="selectTeam" class="form-control select2">
-                            <option value="" hidden selected>Select Team</option>
-                            <?php foreach ($teams as $team) : ?>
-                                <option value="<?php echo $team->id ?>"> <?php echo $team->name ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="row pl-2">
-                        <h5>Location</h5>
 
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="form-group">
-                                <label for="inputLat">Latitude</label>
-                                <input type="number" step="0.00001" class="form-control" min="-90" max="90" id="inputLat" name="latitude">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="form-group">
-                                <label for="inputLong">Longitude</label>
-                                <input class="form-control" type="number" step="0.00001" min="-180" max="180" id="inputLong" name="longitude">
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-info btn-sm col-auto ml-3" onclick="currentLocation()">
-                                <span class="icon"><i class="fa fa-map-pin"></i> </span>
-                                <span class="text-dark">Current Location</span></button>
-                            <small class="text-danger" id="sLocation"></small>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="checkbox" id="checkActive">
-                        <label for="checkActive"> Active </label>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -187,11 +137,6 @@ $teams = Team::all();
     const inputName = document.querySelector("#inputName");
     const inputMflCode = document.querySelector("#inputMflCode")
     const selectCounty = document.querySelector("#selectCounty")
-    const selectTeam = document.querySelector("#selectTeam")
-    const checkActive = document.querySelector("#checkActive")
-    const inputLat = document.querySelector("#inputLat")
-    const inputLong = document.querySelector("#inputLong")
-    const sLocation = document.querySelector("#sLocation")
     let editedId = "";
 
     $(document).ready(function() {
@@ -210,11 +155,7 @@ $teams = Team::all();
         editedId = facility.id;
         inputName.value = facility.name
         inputMflCode.value = facility.mfl_code
-        inputLat.value = facility.latitude
-        inputLong.value = facility.longitude
         $(selectCounty).val(facility.county_code)
-        $(selectTeam).val(facility.team_id)
-        checkActive.checked = facility.active
 
         $('.select2').select2()
     }
@@ -224,10 +165,6 @@ $teams = Team::all();
         let name = inputName.value.trim();
         let mflCode = inputMflCode.value.trim();
         let county = $(selectCounty).val()
-        let latitude = inputLat.value.trim();
-        let longitude = inputLong.value.trim()
-        let active = checkActive.checked
-        let team = $(selectTeam).val()
         if (name === '') {
             inputUsername.focus()
             return
@@ -245,14 +182,10 @@ $teams = Team::all();
         let data = {
             name: name,
             county_code: county,
-            mfl_code: mflCode,
-            latitude: latitude,
-            longitude: longitude,
-            team_id: team,
-            active: active ? 1 : 0
+            mfl_code: mflCode
         }
-        let saveUrl = '../api/facility'
-        let updateUrl = '../api/facility/' + editedId
+        let saveUrl = 'facility/create'
+        let updateUrl = 'facility/update/' + editedId
         btnSaveFacility.setAttribute('disabled', '')
         fetch(
                 editedId === "" ? saveUrl : updateUrl, {
@@ -281,22 +214,6 @@ $teams = Team::all();
 
     }
 
-
-    function currentLocation() {
-        toastr.info("Getting Location...")
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, error => {
-                toastr.error(error.message)
-            });
-        } else {
-            sLocation.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-
-    function showPosition(position) {
-        inputLat.value = position.coords.latitude
-        inputLong.value = position.coords.longitude
-    }
 
 
     function deleteFacility(user) {
