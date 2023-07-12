@@ -84,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
 <body class="bg-white">
 
-
 	<main id="main">
 
 		<div class="align-self-center w-100">

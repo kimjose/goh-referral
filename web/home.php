@@ -105,25 +105,8 @@ $activeReferrals = PatientReferral::where('status', 'active')->orWhere('status',
 </div>
 <!-- /top row boxes -->
 <div class="row">
-	<div class="col-lg-8 mb-4">
-		<div class="card shadow mb-4">
-			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-				<h6 class="m-0 font-weight-bold text-primary">Patients County Mapping</h6>
-				<div class="dropdown no-arrow">
-					<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-						<!-- <a class="dropdown-item" href="#" id="downloadmapcsv">Download csv</a> -->
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div id='map'></div>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-6 mb-2">
+
+	<div class="col-lg-6 mb-2 p-2">
 
 		<div class="card shadow mb-4">
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -139,7 +122,68 @@ $activeReferrals = PatientReferral::where('status', 'active')->orWhere('status',
 		</div>
 	</div>
 
+	<div class="col-lg-6 mb-4">
+		<div class="card shadow mb-4">
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Patients County Mapping</h6>
+				<div class="dropdown no-arrow">
+					<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+						<!-- <a class="dropdown-item" href="#" id="downloadmapcsv">Download csv</a> -->
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+
+			<div id='map'></div>
+				<div style="height: 400px">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 </div>
+
+<style>
+	#map {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 80%;
+	}
+
+	#button {
+		float: right;
+		z-index: 3;
+		position: absolute;
+		right: 5px;
+		top: 5px;
+	}
+
+	.map-legend ul {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.map-legend .swatch {
+		width: 20px;
+		height: 20px;
+		float: left;
+		margin-right: 10px;
+	}
+
+	.leaflet-popup-close-button {
+		display: none;
+	}
+
+	.leaflet-popup-content-wrapper {
+		pointer-events: none;
+	}
+</style>
+
 <script src="../kenya-sponsored-map/lib/jquery-csv-0.71.js"></script>
 <script src="../kenya-sponsored-map/markers.js"></script>
 
