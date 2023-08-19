@@ -6,13 +6,13 @@ use Infinitops\Referral\Models\UserPermission;
 
 $categories = UserCategory::all();
 $permissions = UserPermission::all();
+
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
-?>
-	<script>
-		// TODO Comment out later
-		// window.location.replace("index") 
-	</script>
-<?php endif; ?>
+	?>
+		<script>
+			window.location.replace("index")
+		</script>
+	<?php endif; ?>
 
 
 <div class="col-lg-12">

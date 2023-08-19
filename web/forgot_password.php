@@ -77,6 +77,7 @@
                 toastr.error('Your phone number is invalid')
                 return
             }
+            toastr.info('Requesting OTP...')
             fetch('../request-otp', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -91,6 +92,7 @@
                 })
                 .then(response => {
                     if (response.code == 200) {
+                        toastr.success("OTP sent successfully...")
                         setTimeout(() => {
                             location.replace(`forgot_password_reset?phone_number=${phoneNumber}`)
                         })
@@ -102,5 +104,5 @@
     </script>
 
 </body>
-
+<?php include './footer.php'; ?>
 </html>

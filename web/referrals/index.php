@@ -8,7 +8,13 @@ $activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
 $referredBadge = "<span class=\"badge badge-warning rounded-pill\">Referred Elsewhere</span>";
 $completedBadge = "<span class=\"badge badge-success rounded-pill\">Completed</span>";
 $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</span>";
+
+if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
 ?>
+    <script>
+        window.location.replace("index")
+    </script>
+<?php endif; ?>
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between">
@@ -94,25 +100,28 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
 <script>
     function updateStatus(status, id) {
         customConfirm('Update Status', "Are you sure you want to update the status of this referral?", () => {
-            fetch('referral/update-status',  {
-                method: 'POST',
-                body: JSON.stringify({
-                    status: status, id: id
-                }),
-                headers: {
-                    "content-type": "application/x-www-form-urlencoded"
-                }
-            })
-            .then(response => {return response.json()})
-            .then(response => {
-                if (response.code == 200) {
-                    toastr.success(response.message);
-                    setTimeout(() => location.reload(), 789)
-                } else throw new Error(response.message);
-            })
-            .catch(error => {
-                toastr.error(error.message);
-            })
+            fetch('referral/update-status', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        status: status,
+                        id: id
+                    }),
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded"
+                    }
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(response => {
+                    if (response.code == 200) {
+                        toastr.success(response.message);
+                        setTimeout(() => location.reload(), 789)
+                    } else throw new Error(response.message);
+                })
+                .catch(error => {
+                    toastr.error(error.message);
+                })
         }, () => {})
     }
 </script>

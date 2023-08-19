@@ -9,8 +9,12 @@ $referral = PatientReferral::find($id);
 if ($referral == null) die("Couldn't proceed");
 $facility = $referral->referredFrom();
 
+if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 ?>
-
+    <script>
+        window.location.replace("index")
+    </script>
+<?php endif; ?>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between">
     <ol class="breadcrumb mb-4 transparent">
@@ -194,7 +198,6 @@ $facility = $referral->referredFrom();
         border-bottom: #000019 1px solid;
         color: #009765;
     }
-
 </style>
 
 <script>

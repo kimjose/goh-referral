@@ -9,7 +9,12 @@ $referredBadge = "<span class=\"badge badge-warning rounded-pill\">Referred Else
 $completedBadge = "<span class=\"badge badge-success rounded-pill\">Completed</span>";
 $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</span>";
 
+if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
 ?>
+    <script>
+        window.location.replace("index")
+    </script>
+<?php endif; ?>
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between">
@@ -25,9 +30,11 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-    <div class="card-tools">
-				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index?page=patients-edit"><i class="fa fa-plus"></i> Add New Patient</a>
-			</div>
+        <div class="card-tools">
+            <?php if (!hasPermission(PERM_MANAGE_PATIENTS, $currUser)) : ?>
+                <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index?page=patients-edit"><i class="fa fa-plus"></i> Add New Patient</a>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -61,9 +68,9 @@ $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</sp
                     </tr>
                 </tfoot>
                 <tbody>
-                    <?php foreach ($patients as $patient) : 
+                    <?php foreach ($patients as $patient) :
                         $referral = $patient->lastReferral();
-                        ?>
+                    ?>
                         <tr>
                             <td></td>
                             <td><?php echo $patient->getName(); ?></td>

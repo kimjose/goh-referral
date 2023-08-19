@@ -4,6 +4,14 @@ use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Patient;
 use Infinitops\Referral\Models\SubCounty;
 
+
+if (!hasPermission(PERM_MANAGE_PATIENTS, $currUser)) :
+?>
+    <script>
+        window.location.replace("index")
+    </script>
+<?php endif; ?>
+<?php
 $k = '_7Op_';
 $id = "";
 if (isset($_GET['id']) && $_GET['id'] != null) {

@@ -164,6 +164,13 @@ class Utility
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host = $_ENV['MAILER_HOST'];                     //Set the SMTP server to send through
             $mail->SMTPAuth = true;                              //Enable SMTP authentication
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                         'verify_peer' => false,
+                         'verify_peer_name' => false,
+                         'allow_self_signed' => true
+                     )
+                 );
             $mail->Username = $_ENV['MAILER_ADDRESS'];                     //SMTP username
             $mail->Password = $_ENV['MAILER_PASSWORD'];                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
@@ -195,7 +202,7 @@ class Utility
             return true;
 //            echo 'Message has been sent';
         } catch (\Exception $e) {
-            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             self::logError($e->getCode(), $e->getMessage());
             return false;
         }

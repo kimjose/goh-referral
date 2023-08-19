@@ -8,7 +8,12 @@ use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\Facility;
 use Infinitops\Referral\Models\UserCategory;
 
+if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 ?>
+	<script>
+		window.location.replace("index")
+	</script>
+<?php endif; ?>
 <?php
 
 
