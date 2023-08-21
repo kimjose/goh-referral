@@ -1,11 +1,11 @@
 <?php
 
-use Umb\Mentorship\Models\User;
-use Umb\Mentorship\Models\Facility;
-use Umb\Mentorship\Models\Checklist;
-use Umb\Mentorship\Models\FacilityVisit;
+use Infinitops\Referral\Models\User;
+use Infinitops\Referral\Models\Patient;
 use Illuminate\Database\Capsule\Manager as DB;
+use Infinitops\Referral\Models\PatientReferral;
 
+$base_url = $_ENV['APP_URL']  ?? "http://127.0.0.1/";
 $thisMonth = date('y-m-01');
 
 $startDate = date_create(date('y-m-d'));
@@ -14,342 +14,326 @@ date_sub($startDate, date_interval_create_from_date_string("60 days"));
 $startDate = date_format($startDate, 'Y-m-d');
 
 $users = User::all();
-$facilities = DB::select("select f.*, (select COUNT(fv.facility_id) from facility_visits fv where fv.facility_id = f.id GROUP BY fv.facility_id) as visits from facilities f order by visits desc;");
-$checklists = Checklist::where('status', 'published')->get();
-/** @var FacilityVisit[] $periodVisits */
-$periodVisits = FacilityVisit::where('visit_date', '>=', $startDate)->where('visit_date', '<=', $endDate)->orderBy('visit_date', 'asc')->get();
-
-$responses = DB::select("select r.*, q.category, q.frequency_id from responses r left join questions q on q.id = r.question_id ");
+$patients = Patient::all();
+$referrals = PatientReferral::all();
+$activeReferrals = PatientReferral::where('status', 'active')->orWhere('status', 'waiting')->get();
 ?>
+
+<script>
+	const base_url = "<?php echo $base_url ?>"
+</script>
+<script src='../kenya-sponsored-map/js/mapbox.js'></script>
+<script src="../kenya-sponsored-map/js/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../kenya-sponsored-map/css/MarkerCluster.css" />
+<link rel="stylesheet" type="text/css" href="../kenya-sponsored-map/css/MarkerCluster.Default.css" />
+<script type='text/javascript' src='../kenya-sponsored-map/js/leaflet.markercluster.js'></script>
+<link href='../kenya-sponsored-map/css/mapbox.css' rel='stylesheet' />
+
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between">
-  <ol class="breadcrumb mb-4 transparent">
+	<ol class="breadcrumb mb-4 transparent">
 
-    <li class="breadcrumb-item active"> Home </li>
-  </ol>
+		<li class="breadcrumb-item active"> Home </li>
+	</ol>
 
 </div>
 
 <!-- top row boxes -->
 <div class="row">
-  <div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-info">
-      <div class="inner">
-        <h3><?php echo sizeof($users); ?></h3>
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-info">
+			<div class="inner">
+				<h3><?php echo sizeof($users); ?></h3>
 
-        <p>Users</p>
-      </div>
-      <div class="icon">
-        <i class="ion ion-bag"></i>
-      </div>
-      <a href="index?page=users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-success">
-      <div class="inner">
-        <h3><?php echo sizeof($facilities) ?></h3>
+				<p>Users</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-bag"></i>
+			</div>
+			<a href="index?page=users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-success">
+			<div class="inner">
+				<h3><?php echo sizeof($patients) ?></h3>
 
-        <p>Facilities</p>
-      </div>
-      <div class="icon">
-        <i class="ion ion-stats-bars"></i>
-      </div>
-      <a href="index?page=facilities" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-secondary">
-      <div class="inner">
-        <h3><?php echo sizeof($checklists) ?></h3>
+				<p>Patients</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-stats-bars"></i>
+			</div>
+			<a href="index?page=patients" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-secondary">
+			<div class="inner">
+				<h3><?php echo sizeof($referrals) ?></h3>
 
-        <p>Checklists</p>
-      </div>
-      <div class="icon">
-        <i class="ion ion-pie-graph"></i>
-      </div>
-      <a href="index?page=checklists" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-warning">
-      <div class="inner">
-        <h3><?php echo sizeof($periodVisits) ?></h3>
+				<p>Referrals</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-pie-graph"></i>
+			</div>
+			<a href="index?page=referrals" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
+	<div class="col-lg-3 col-6">
+		<!-- small box -->
+		<div class="small-box bg-warning">
+			<div class="inner">
+				<h3><?php echo sizeof($activeReferrals) ?></h3>
 
-        <p>Periods facility visits</p>
-      </div>
-      <div class="icon">
-        <i class="ion ion-person-add"></i>
-      </div>
-      <a href="index?page=visits" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-  </div>
-  <!-- ./col -->
+				<p>Active Referrals</p>
+			</div>
+			<div class="icon">
+				<i class="ion ion-person-add"></i>
+			</div>
+			<a href="index?page=referrals" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
 
 </div>
 <!-- /top row boxes -->
-
-<h4>Visits Overview</h4>
 <div class="row">
-  <div class="col-lg-8 col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">
-          <i class="fa fa-chart-line mr-1"></i>
-          Visits Over Time
-        </h3>
-      </div>
-      <div class="card-body">
-        <canvas class="chart" id="graphVisitsOverTime" style="min-height: 280px; height: 280px; max-height: 280px; max-width: 100%;"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4 col-md-12">
-    <div class="row">
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header bg-primary">
-            <h6 class="card-title"> Facilities with most visits</h6>
-          </div>
-          <div class="card-body p-2">
-            <ul class=" p-0" style="list-style:none; overflow-y:auto; overflow-x:hidden; min-height: 260px; height: 260px; max-height: 260px;">
-              <?php for ($i = 0; $i < 5; $i++) :
-                $facility = $facilities[$i]; ?>
-                <li class="mt-1">
-                  <div class="row" style="">
-                    <div class="col-8">
-                      <p><?php echo $facility->name ?></p>
-                    </div>
-                    <div class="col-4">
-                      <h4 class="text-center text-info"><?php echo $facility->visits ?? 0 ?></h4>
-                    </div>
-                  </div>
-                </li>
-              <?php endfor; ?>
-            </ul>
-            <a href="index?page=facilities" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header bg-warning">
-            <h6 class="card-title"> Facilities with least visits</h6>
-          </div>
-          <div class="card-body">
-            <ul class=" p-0" style="list-style:none; overflow-y:auto; overflow-x:hidden; min-height: 260px; height: 260px; max-height: 260px;">
-              <?php for ($i = 1; $i <= 5; $i++) :
-                $facility = $facilities[sizeof($facilities) - $i]; ?>
-                <li class="mt-1">
-                  <div class="row" style="">
-                    <div class="col-8">
-                      <p><?php echo $facility->name ?></p>
-                    </div>
-                    <div class="col-4">
-                      <h4 class="text-center text-info"><?php echo $facility->visits ?? 0 ?></h4>
-                    </div>
-                  </div>
-                </li>
-              <?php endfor; ?>
-            </ul>
-            <a href="index?page=facilities" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Response Category Analysis</h3>
 
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-      <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-        <canvas id="canvasResponse" height="300" style="height: 300px;"></canvas>
-      </div>
-    </div>
-    <!-- /.card-body -->
-    <div class="card-footer p-0">
-    </div>
-    <!-- /.footer -->
-  </div>
+	<div class="col-lg-6 mb-2 p-2">
 
-  <!-- Custom tabs (Charts with tabs)-->
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">
-        <i class="fas fa-chart-pie mr-1"></i>
-        Visits
-      </h3>
-      <div class="card-tools">
-        <ul class="nav nav-pills ml-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-          </li>
-        </ul>
-      </div>
-    </div><!-- /.card-header -->
-    <div class="card-body">
-      <div class="tab-content p-0">
-        <!-- Morris chart - Sales -->
-        <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-          <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-        </div>
-        <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-          <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-        </div>
-      </div>
-    </div><!-- /.card-body -->
-  </div>
+		<div class="card shadow mb-4">
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Patient Categorization by Age
+					and Gender</h6>
+
+			</div>
+			<div class="card-body">
+				<div class="chart-area">
+					<canvas id="patientCategorization"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-6 mb-4">
+		<div class="card shadow mb-4">
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="m-0 font-weight-bold text-primary">Patients County Mapping</h6>
+				<div class="dropdown no-arrow">
+					<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+						<!-- <a class="dropdown-item" href="#" id="downloadmapcsv">Download csv</a> -->
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+
+			<div id='map'></div>
+				<div style="height: 400px">
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 </div>
 
+<style>
+	#map {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 80%;
+	}
+
+	#button {
+		float: right;
+		z-index: 3;
+		position: absolute;
+		right: 5px;
+		top: 5px;
+	}
+
+	.map-legend ul {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.map-legend .swatch {
+		width: 20px;
+		height: 20px;
+		float: left;
+		margin-right: 10px;
+	}
+
+	.leaflet-popup-close-button {
+		display: none;
+	}
+
+	.leaflet-popup-content-wrapper {
+		pointer-events: none;
+	}
+</style>
+
+<script src="../kenya-sponsored-map/lib/jquery-csv-0.71.js"></script>
+<script src="../kenya-sponsored-map/markers.js"></script>
 
 <script>
-  const startDateString = "<?php echo $startDate; ?>"
-  const endDateString = "<?php echo $endDate; ?>"
-  const visits = JSON.parse('<?php echo $periodVisits ?>');
-  const responses = JSON.parse('<?php echo json_encode($responses) ?>')
+	const patients = JSON.parse('<?php echo json_encode($patients) ?>')
+	const patientCategorization = document.getElementById('patientCategorization')
+	const rowHeaders = ['Location', 'County', 'Facilities', 'Patients'];
+	let mapdata;
 
-  function drawResponseDonut() {
-    let canvasResponse = $('#canvasResponse').get(0).getContext('2d')
-    let labels = ['Facility', 'SDP', 'Individual']
-    let data = [0, 0, 0]
-    responses.forEach(response => {
-      if (response.category === 'facility') data[0]++
-      if (response.category === 'sdp') data[1]++
-      if (response.category === 'individual') data[2]++
-    })
-    let pieData = {
-      labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: ['#f56954', '#00a65a', '#f39c12']
-      }]
-    }
-    var pieOptions = {
-      legend: {
-        display: false
-      },
-      maintainAspectRatio: false,
-      responsive: true
-    }
-    let pieChart = new Chart(canvasResponse, { // lgtm[js/unused-local-variable]
-      type: 'doughnut',
-      data: pieData,
-      options: pieOptions
-    })
-  }
 
-  function drawVisitsGraph() {
 
-    console.log(visits);
-    let labels = [];
-    let values = [];
-    let startDate = new Date(startDateString)
-    let endDate = new Date(endDateString)
-    let diff = (endDate - startDate) / (24 * 3600 * 1000)
+	$(function() {
+		console.log("Method called...");
 
-    for (let i = 0; i <= diff; i++) {
-      let mDate = new Date(startDate.getTime() + (i * (24 * 3600 * 1000)))
-      let label = DateFormatter.formatDate(mDate, 'MM/DD')
-      labels.push(label)
-      let dayVisits = visits.filter((visit) => {
-        return visit.visit_date === DateFormatter.formatDate(mDate, 'yyyy-MM-DD')
-      })
-      values.push(dayVisits.length);
-    }
+		fetch("get_map_data")
+			.then(response => {
+				return response.json();
+			})
+			.then(response => {
+				console.log(response);
+				if (response.code == 200) {
+					JSONtoCSV(response.data)
+				} else throw new Error(response.message);
+			})
+			.catch(err => {
+				toastr.error(err.message)
+				// alert(err.message);
+			})
 
-    let ticksStyle = {
-      fontColor: '#495057',
-      fontStyle: 'bold'
-    }
-    let mode = 'index'
-    let intersect = true
-    let $visitorsChart = $('#graphVisitsOverTime')
-    // eslint-disable-next-line no-unused-vars
-    let visitorsChart = new Chart($visitorsChart, {
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'visits',
-          type: 'line',
-          data: values,
-          backgroundColor: 'transparent',
-          borderColor: '#007bff',
-          pointBorderColor: '#007bff',
-          pointBackgroundColor: '#007bff',
-          fill: false
-          // pointHoverBackgroundColor: '#007bff',
-          // pointHoverBorderColor    : '#007bff'
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        tooltips: {
-          mode: mode,
-          intersect: intersect
-        },
-        hover: {
-          mode: mode,
-          intersect: intersect
-        },
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: "No. of Visits",
-            },
-            gridLines: {
-              display: true,
-              lineWidth: '4px',
-              color: 'rgba(0, 0, 0, .2)',
-              zeroLineColor: 'transparent'
-            },
-            ticks: $.extend({
-              beginAtZero: true,
-              suggestedMax: 10
-            }, ticksStyle)
-          }],
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: "Dates",
-            },
-            display: true,
-            gridLines: {
-              display: false
-            },
-            ticks: ticksStyle
-          }]
-        }
-      }
-    })
-  }
+	})
 
-  drawVisitsGraph()
-  drawResponseDonut()
+
+	function JSONtoCSV(response) {
+		var csvStr = rowHeaders.join(',') + '\n';
+
+		console.log(response);
+
+		response.forEach(element => {
+			Location = element.Location;
+			County = element.County;
+			Facilities = element.Facilities;
+			Patients = element.Patients;
+
+			csvStr += '"' + Location + '",' + County + ',' + Facilities + ',' + Patients + '\n';
+		});
+		console.log(csvStr);
+		mapdata = csvStr;
+		populateMap(csvStr);
+
+	}
+
+	function downloadMapCSV(csvStr) {
+
+		$.ajax({
+			url: 'updatecsvfile',
+			type: "POST",
+			data: {
+				file: csvStr
+			},
+			success: function(response) {
+				console.log(response + 'csv file updated');
+				$(document).ready(function() {
+					var link = document.createElement("a");
+					link.setAttribute("href", "./kenya-sponsored-map/data/rows.csv");
+					link.setAttribute("download", "mapdata.csv");
+					document.body.appendChild(link); // Required for FF
+
+					link.click();
+				});
+			},
+			error: function() {
+				console.log('error updating csv file')
+			}
+		});
+	}
+
+	function drawPatientsCategorization() {
+		let maleCat1 = 0
+		let maleCat2 = 0
+		let femaleCat1 = 0
+		let femaleCat2 = 0
+
+		patients.forEach(patient => {
+			let age = calculateAge(new Date(patient.dob))
+			if (age < 15) {
+				if (patient.gender == 'male') maleCat1++;
+				else femaleCat1++
+			} else {
+				if (patient.gender == 'male') maleCat2++;
+				else femaleCat2++
+			}
+		})
+
+		const dataChartBarDoubleDatasetsExample = new Chart(patientCategorization, {
+			type: 'bar',
+			data: {
+				labels: ["<15 years", "15+ years"],
+
+				datasets: [{
+						label: 'Male',
+						data: [maleCat1, maleCat2],
+						backgroundColor: '#3895D3',
+						borderColor: '#3895D3',
+					},
+					{
+						label: 'Female',
+						data: [femaleCat1, femaleCat2],
+						backgroundColor: '#980147',
+						borderColor: '#980147',
+					},
+				],
+			},
+			options: {
+				maintainAspectRatio: false,
+				scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "Age Range",
+						},
+						gridLines: {
+							drawOnChartArea: false,
+						},
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "No. of Patients",
+						},
+						ticks: {
+							min: 0,
+							maxTicksLimit: 6,
+						},
+						gridLines: {
+							drawOnChartArea: false,
+						},
+					}]
+				}
+			},
+		});
+
+	}
+
+	function calculateAge(dob) {
+		let now = new Date();
+		let age_diff = now.getTime() - dob.getTime();
+
+		return Math.floor(age_diff / (1000 * 60 * 60 * 24 * 365.25));
+	}
+
+
+	drawPatientsCategorization()
 </script>

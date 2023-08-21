@@ -155,7 +155,8 @@ class Utility
     {
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
-        $footer = "<hr> <h4>Click <a href='http://psms.mgickenya.org:81/event-management/admin/'>here</a> to open event management application. </h4>";
+        $appUrl = $_ENV['APP_URL'];
+        $footer = "<hr> <h4>Click <a href='{$appUrl}'>here</a> to open event management application. </h4>";
         $body .= $footer;
         try {
             //Server settings
@@ -163,6 +164,13 @@ class Utility
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host = $_ENV['MAILER_HOST'];                     //Set the SMTP server to send through
             $mail->SMTPAuth = true;                              //Enable SMTP authentication
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                         'verify_peer' => false,
+                         'verify_peer_name' => false,
+                         'allow_self_signed' => true
+                     )
+                 );
             $mail->Username = $_ENV['MAILER_ADDRESS'];                     //SMTP username
             $mail->Password = $_ENV['MAILER_PASSWORD'];                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
@@ -191,10 +199,12 @@ class Utility
             //            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
+            return true;
 //            echo 'Message has been sent';
         } catch (\Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             self::logError($e->getCode(), $e->getMessage());
+            return false;
         }
     }
 

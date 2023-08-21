@@ -3,6 +3,7 @@
 <?php
 
 use Infinitops\Referral\Models\User;
+
 require_once __DIR__ . "/../vendor/autoload.php";
 session_start();
 
@@ -58,10 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
 	<?php include('./header.php'); ?>
 	<!-- <?php
-	// if (isset($_SESSION['login_id']))
-		// header("location:index.php?page=home");
+			// if (isset($_SESSION['login_id']))
+			// header("location:index.php?page=home");
 
-	?> -->
+			?> -->
 
 </head>
 <style>
@@ -81,15 +82,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 	}
 </style>
 
-<body class="bg-dark">
-
+<body class="bg-white">
 
 	<main id="main">
 
 		<div class="align-self-center w-100">
-			<h4 class="text-white text-center"><b>Jumuia</b></h4>
-			<div id="login-center" class="bg-dark row justify-content-center">
-				<div class="card col-md-4">
+			<!-- <h4 class="text-white text-center"><b>Jumuia</b></h4> -->
+			<div class="text-center mb-2">
+				<img src="assets/img/logo.jpeg" alt="Jumuia" srcset="">
+			</div>
+			<div id="login-center" class=" row justify-content-center">
+				<div class="card col-md-4 m-2">
 					<div class="card-body">
 						<form id="login-form" action="login" method="POST">
 							<div class="form-group">
@@ -100,9 +103,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 								<label for="password" class="control-label text-dark">Password</label>
 								<input type="password" id="password" name="password" class="form-control form-control-sm" required>
 							</div>
-						<p class="text-danger"><?php echo $loginError; ?></p>
+							<p class="text-danger"><?php echo $loginError; ?></p>
 							<center><input class="btn-sm btn-block btn-wave col-md-4 btn-primary" name="submit" type="submit" value="Login"></center>
 						</form>
+
+						<div class="text-center">
+							<a class="small" href="forgot_password.php">Forgot Password?</a>
+						</div>
+
 					</div>
 				</div>
 			</div>

@@ -1,16 +1,19 @@
 <?php
 
-use Umb\Mentorship\Models\UserCategory;
-use Umb\Mentorship\Models\UserPermission;
+
+use Infinitops\Referral\Models\UserCategory;
+use Infinitops\Referral\Models\UserPermission;
 
 $categories = UserCategory::all();
 $permissions = UserPermission::all();
+
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
-?>
-	<script>
-		window.location.replace("index")
-	</script>
-<?php endif; ?>
+	?>
+		<script>
+			window.location.replace("index")
+		</script>
+	<?php endif; ?>
+
 
 <div class="col-lg-12">
 	<div class="card card-outline card-success">
@@ -29,7 +32,6 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 						<th>Name</th>
 						<th>Description</th>
 						<th>Permissions</th>
-						<th>Access Level</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -54,7 +56,6 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 									endforeach; ?>
 								</ul>
 							</td>
-							<td><b><?php echo $category->access_level ?></b></td>
 							<td class="text-center">
 								<?php if (hasPermission(PERM_SYSTEM_ADMINISTRATION, $currUser)) : ?>
 
@@ -94,15 +95,6 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 						<label for="inputDescription">Description</label>
 						<textarea name="description" id="inputDescription" class="form-control" cols="30" rows="5" placeholder="Category Description" required></textarea>
 					</div>
-					<div class="form-group">
-						<label for="">Access Level</label>
-						<select name="access_level" id="selectAccessLevel" class="form-control">
-							<option value="" selected hidden>Select Access Level</option>
-							<option value="Program">Program</option>
-							<option value="Facility">Facility</option>
-						</select>
-					</div>
-
 					<hr>
 
 					<h6>Permissions</h6>
@@ -132,7 +124,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 <style>
 	.permission-tag {
 		padding: 4px;
-		background: #b92500;
+		background: #28a745;
 		color: #ffffff;
 		border-radius: 4px;
 		margin-bottom: 5px;
@@ -195,7 +187,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 		categoryData.permissions = permissionIds.toString();
 
 
-		fetch(editedId == '' ? '../api/user_category' : `../api/user_category/${editedId}`, {
+		fetch(editedId == '' ? 'user_category/create' : `user_category/update/${editedId}`, {
 				method: 'POST',
 				body: JSON.stringify(categoryData),
 				headers: {

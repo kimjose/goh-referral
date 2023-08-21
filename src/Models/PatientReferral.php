@@ -26,4 +26,9 @@ class PatientReferral extends Model
     public function referredFrom(){
         return Facility::find($this->facility_id);
     }
+
+    /** @return Department */
+    public function referredFromDepartment(){
+        return Department::find($this->department_id);
+    }
 }
