@@ -63,6 +63,12 @@ $router->mount('/user', function () use ($router) {
     $router->post('/register', function () use ($controller, $data) {
         $controller->register($data);
     });
+    $router->post('/update_profile', function () use ($controller, $data) {
+        $controller->updateUserProfile($data);
+    });
+    $router->post('/update_password', function () use ($controller, $data) {
+        $controller->updatePassword($data);
+    });
 });
 $router->mount('/patient', function () use ($router) {
     //GET
