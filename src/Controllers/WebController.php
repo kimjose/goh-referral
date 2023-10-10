@@ -200,6 +200,24 @@ class WebController
         }
     }
 
+    public function activateUserAccount($data){
+        try{
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $user = User::find($data['id']);
+            if($user == null || $user->status == "Active") throw new \Exception("User not found or is already active.");
+            $user->status = "Active";
+            $user->activated_by = $this->user->id;
+            $user->save();
+            response(SUCCESS_RESPONSE_CODE, "User activated", $user);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+
     public function updateUserProfile($id, $data)
     {
         try {
