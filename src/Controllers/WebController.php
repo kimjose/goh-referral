@@ -11,6 +11,7 @@ use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\PatientReferral;
 use Infinitops\Referral\Controllers\Utils\Utility;
 use Infinitops\Referral\Models\Department;
+use Infinitops\Referral\Models\Insurance;
 
 class WebController
 {
@@ -332,6 +333,40 @@ class WebController
             $department->name = $data['name'];
             $department->save();
             response(SUCCESS_RESPONSE_CODE, "The department has been updated successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function createInsurance($data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Insurance::where('name', $data['name'])->first();
+            throw_if($exists != null, new \Exception("Insurance already exists.", -1));
+            Insurance::create($data);
+            response(SUCCESS_RESPONSE_CODE, "The department has been added successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function updateInsurance($id, $data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Insurance::where('name', $data['name'])->where('id','!=', $id)->first();
+            throw_if($exists != null, new \Exception("Department already exists.", -1));
+            $insurance = Insurance::findOrFail($id);
+            $insurance->name = $data['name'];
+            $insurance->save();
+            response(SUCCESS_RESPONSE_CODE, "The insurance has been updated successfully");
         } catch (\Throwable $th){
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

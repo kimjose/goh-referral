@@ -177,6 +177,17 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateDepartment($id, $data);
     });
+
+    $router->post('/insurance/create', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->createInsurance($data);
+    });
+    $router->post('/insurance/update/{id}', function ($id) {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateInsurance($id, $data);
+    });
     $router->post('/facility/create', function () {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
