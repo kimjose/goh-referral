@@ -67,8 +67,23 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2023-04-21T06:33:29.802Z",
-            "modified": "2023-04-21T06:55:31.349Z",
-            "headers": [],
+            "modified": "2023-09-21T09:28:44.554Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                },
+                {
+                    "name": "UUID",
+                    "value": "{e4952fb5-5b0b-4d4e-a4be-aec7ac7d9010}"
+                }
+            ],
             "params": [],
             "body": {
                 "type": "json",
@@ -195,11 +210,11 @@
             "method": "GET",
             "sortNum": 100000,
             "created": "2023-04-22T15:44:58.629Z",
-            "modified": "2023-04-22T15:51:33.062Z",
+            "modified": "2023-10-10T07:02:46.245Z",
             "headers": [
                 {
                     "name": "TOKEN",
-                    "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+                    "value": "{{token}}"
                 }
             ],
             "params": [],
@@ -349,6 +364,25 @@
             "created": "2023-07-01T12:57:14.186Z",
             "modified": "2023-07-01T12:58:02.201Z",
             "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "249392c1-064c-4701-aa05-a0c4868cdea3",
+            "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+            "containerId": "",
+            "name": "search patients",
+            "url": "{{base_url}}patient/search_patients/34467532",
+            "method": "GET",
+            "sortNum": 105000,
+            "created": "2023-10-10T08:24:54.591Z",
+            "modified": "2023-10-10T09:37:42.020Z",
+            "headers": [
+                {
+                    "name": "TOKEN",
+                    "value": "{{token}}"
+                }
+            ],
             "params": [],
             "tests": []
         }

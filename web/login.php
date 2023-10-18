@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 		if ($user == null) throw new \Exception("Invalid credentials. Try again.");
 		if (password_verify($password, $user->password)) {
 			// echo "Here is here.";
+			if($user->status != "Active") throw new \Exception("User account not active.");
 			$user->last_login = date("Y:m:d h:i:s", time());
 			$user->save();
 			session_start();

@@ -3,7 +3,8 @@
 use Infinitops\Referral\Models\User;
 
 $users = User::all();
-
+$activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
+$inactiveBadge = "<span class=\"badge badge-secondary rounded-pill\">Inactive</span>";
 
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 ?>
@@ -28,6 +29,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 							<th>Phone Number</th>
 							<th>User category</th>
 							<th>Email</th>
+							<th>Status</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -42,6 +44,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 								<td><b><?php echo $user->phone_number ?></b></td>
 								<td><b><?php echo $user->getCategory()->name ?></b></td>
 								<td><b><?php echo $user->email ?></b></td>
+								<td><?php echo $user->status == "Active" ? $activeBadge : $inactiveBadge ?></td>
 								<td class="text-center">
 									<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										Action
@@ -50,6 +53,10 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 										<a class="dropdown-item users-view" href="javascript:void(0)" data-id="<?php echo $user->id ?>">View</a>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href="./index?page=users-edit&id=<?php echo $user->id ?>">Edit</a>
+										<?php if ($user->status == "Inactive") : ?>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item activate_user_account" href="javascript:void(0)" data-id="<?php echo $user->id ?>">Activate</a>
+										<?php endif; ?>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item delete_user" href="javascript:void(0)" data-id="<?php echo $user->id ?>">Delete</a>
 									</div>
@@ -70,6 +77,37 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 		})
 		$('.delete_user').click(function() {
 			_conf("Are you sure to delete this user?", "delete_user", [$(this).attr('data-id')])
+		})
+		$('.activate_user_account').click(() => {
+			let el = document.querySelector(".activate_user_account")
+			let userId = $(el).attr('data-id')
+			let data = {
+				id: userId
+			}
+			console.log(data);
+			fetch('user/activate', {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					"content-type": "application/x-www-form-urlencoded"
+				}
+			})
+			.then(response => {
+				return response.json()
+			})
+			.then(response => {
+				if (response.code === 200) {
+					toastr.success(response.message)
+					setTimeout(() => {
+						window.location.reload()
+					}, 800)
+				} else throw new Error(response.message)
+			})
+			.catch(error => {
+				end_load()
+				console.log(error.message);
+				toastr.error(error.message)
+			})
 		})
 	})
 

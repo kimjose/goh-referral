@@ -80,6 +80,10 @@ $router->mount('/patient', function () use ($router) {
         $controller = new PatientsController();
         $controller->searchPatientByIdentifier($identifier);
     });
+    $router->get('/search_patients/{searchString}', function($searchString){
+        $controller = new PatientsController();
+        $controller->searchPatient($searchString);
+    });
 
     //POST
     $data = json_decode(file_get_contents('php://input'), true);
@@ -156,6 +160,11 @@ $router->mount('/web', function () use ($router) {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->createUser($data);
+    });
+    $router->post('/user/activate', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->activateUserAccount($data);
     });
     $router->post('/user/update/{id}', function ($id) {
         $controller = new WebController();

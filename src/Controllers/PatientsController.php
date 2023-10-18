@@ -73,9 +73,11 @@ class PatientsController extends Controller
     }
 
     public function searchPatient($searchString){
-        try{
-            $patients = [];
+        try {
             $patients = Patient::where('identifier', $searchString)->get();
+            if(sizeof($patients) > 0)
+                response(SUCCESS_RESPONSE_CODE, "Patients found", $patients);
+            else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

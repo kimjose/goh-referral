@@ -74,7 +74,7 @@ class UsersController extends Controller
             $attributes = ['phone_number', 'password'];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
-            $user = User::where('phone_number', $data['phone_number'])->first();
+            $user = User::where('phone_number', $data['phone_number'])->where("deleted", 0)->first();
             if ($user == null) throw new \Exception("User does not exist", -1);
             if (password_verify($data['password'], $user->password)) {
                 $user->last_login = date("Y:m:d h:i:s", time());
