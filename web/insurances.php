@@ -8,7 +8,7 @@ use Infinitops\Referral\Models\Insurance;
 <?php
 
 
-$insurances = Insurance::all();
+$insurances = Insurance::where('deleted', 0)->get();
 ?>
 
 
@@ -170,7 +170,28 @@ $insurances = Insurance::all();
 
 
     function deleteInsurance(insurance) {
-        // TODO
+        let r = confirm('Are you sure you want to delete this insurance?')
+        if (r) {
+            fetch("insurance/delete", {
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded"
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: insurance.id
+                    })
+                })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.code == 200) {
+                        toastr.success("insurance deleted successfully.")
+                        setTimeout(() => location.reload(), 897)
+                    } else throw new Exception(response.message)
+                })
+                .error(err => {
+                    toastr.error(err.message)
+                })
+        }
     }
 
     initialize()

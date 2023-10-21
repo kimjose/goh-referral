@@ -365,6 +365,7 @@ class WebController
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
             $exists = Insurance::where('name', $data['name'])->first();
             throw_if($exists != null, new \Exception("Insurance already exists.", -1));
+            $data['created_by'] = $this->user->id;
             Insurance::create($data);
             response(SUCCESS_RESPONSE_CODE, "The department has been added successfully");
         } catch (\Throwable $th){
@@ -385,6 +386,23 @@ class WebController
             $insurance->name = $data['name'];
             $insurance->save();
             response(SUCCESS_RESPONSE_CODE, "The insurance has been updated successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function deleteInsurance($data){
+        try{
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            $insurance = Insurance::find($data['id']);
+            if($insurance == null) throw new \Exception("Insurance not found", -1);
+            $insurance->deleted = 1;
+            $insurance->deleted_by = $this->user->id;
+            $insurance->save();
+            response(SUCCESS_RESPONSE_CODE, "The insurance has been removed successfully");
         } catch (\Throwable $th){
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

@@ -90,6 +90,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="./index?page=insurances" class="nav-link nav-insurances">
+              <img src="assets/img/health-insurance.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Insurances
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>

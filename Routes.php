@@ -197,6 +197,11 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateInsurance($id, $data);
     });
+    $router->post('/insurance/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteInsurance($data);
+    });
     $router->post('/facility/create', function () {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);

@@ -86,48 +86,51 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 			}
 			console.log(data);
 			fetch('user/activate', {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers: {
-					"content-type": "application/x-www-form-urlencoded"
-				}
-			})
-			.then(response => {
-				return response.json()
-			})
-			.then(response => {
-				if (response.code === 200) {
-					toastr.success(response.message)
-					setTimeout(() => {
-						window.location.reload()
-					}, 800)
-				} else throw new Error(response.message)
-			})
-			.catch(error => {
-				end_load()
-				console.log(error.message);
-				toastr.error(error.message)
-			})
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						"content-type": "application/x-www-form-urlencoded"
+					}
+				})
+				.then(response => {
+					return response.json()
+				})
+				.then(response => {
+					if (response.code === 200) {
+						toastr.success(response.message)
+						setTimeout(() => {
+							window.location.reload()
+						}, 800)
+					} else throw new Error(response.message)
+				})
+				.catch(error => {
+					end_load()
+					console.log(error.message);
+					toastr.error(error.message)
+				})
 		})
 	})
 
 	function delete_user($id) {
-		start_load()
-		$.ajax({
-			url: 'ajax.php?action=delete_user',
-			method: 'POST',
-			data: {
-				id: $id
-			},
-			success: function(resp) {
-				if (resp == 1) {
-					alert_toast("Data successfully deleted", 'success')
-					setTimeout(function() {
-						location.reload()
-					}, 1500)
+		let r = confirm('Are you sure you want to delete this user?')
+		if (r) {
+			start_load()
+			$.ajax({
+				url: 'ajax.php?action=delete_user',
+				method: 'POST',
+				data: {
+					id: $id
+				},
+				success: function(resp) {
+					if (resp == 1) {
+						alert_toast("Data successfully deleted", 'success')
+						setTimeout(function() {
+							location.reload()
+						}, 1500)
 
+					}
 				}
-			}
-		})
+			})
+		}
 	}
 </script>
