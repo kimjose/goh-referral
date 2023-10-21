@@ -5,6 +5,7 @@ use Infinitops\Referral\Models\Otp;
 use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Facility;
+use Infinitops\Referral\Models\Insurance;
 use Infinitops\Referral\Models\SubCounty;
 use Infinitops\Referral\Models\Department;
 use Infinitops\Referral\Controllers\Utils\Utility;
@@ -38,6 +39,10 @@ $router->get('/facilities', function () {
 $router->get('/departments', function () {
     $departments = Department::all();
     response(SUCCESS_RESPONSE_CODE, "Departments", $departments);
+});
+$router->get('/insurances/all', function(){
+    $insurances = Insurance::where('deleted', 0)->get();
+    response(SUCCESS_RESPONSE_CODE, "Insurances", $insurances);
 });
 $router->mount('/user', function () use ($router) {
     $controller = new UsersController();

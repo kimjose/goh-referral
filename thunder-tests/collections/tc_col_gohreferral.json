@@ -385,6 +385,20 @@
             ],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "fa4a129b-ecfa-42b9-8aec-168e632000ff",
+            "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+            "containerId": "",
+            "name": "Get insurances",
+            "url": "{{base_url}}insurances/all",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2023-10-21T07:58:57.274Z",
+            "modified": "2023-10-21T07:59:15.912Z",
+            "headers": [],
+            "params": [],
+            "tests": []
         }
     ]
 }
