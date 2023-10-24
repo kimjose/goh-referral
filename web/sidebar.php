@@ -98,6 +98,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="./index?page=analytics" class="nav-link nav-analytics">
+              <img src="assets/img/analytics.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Analytics
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
