@@ -98,13 +98,35 @@
               </p>
             </a>
           </li>
+
           <li class="nav-item">
-            <a href="./index?page=analytics" class="nav-link nav-analytics">
+            <a href="#" class="nav-link nav-analytics">
               <img src="assets/img/analytics.png" class="nav-icon" alt="" srcset="">
               <p>
                 Analytics
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index?page=users-edit" class="nav-link nav-users-edit tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Add New</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=users" class="nav-link nav-users tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=users-categories" class="nav-link nav-users-categories tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Categories</p>
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
