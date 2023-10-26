@@ -109,21 +109,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index?page=users-edit" class="nav-link nav-users-edit tree-item">
+                <a href="./index?page=analytics-patients" class="nav-link nav-analytics-patients tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Add New</p>
+                  <p>Patients Report</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index?page=users" class="nav-link nav-users tree-item">
+                <a href="./index?page=analytics-users" class="nav-link nav-analytics-users tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>List</p>
+                  <p>Users Report</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index?page=users-categories" class="nav-link nav-users-categories tree-item">
+                <a href="./index?page=analytics-referrals" class="nav-link nav-analytics-referrals tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Categories</p>
+                  <p>Referrals Report</p>
                 </a>
               </li>
             </ul>
