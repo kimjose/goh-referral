@@ -234,7 +234,7 @@ $router->post('request-otp', function () {
         $otp = Otp::where('user_id', $user->id)->where('is_used', 0)->where('expires_at', '>', date('Y-m-d H:i:s'))->first();
         if($otp == null) {
             $d = date("Y-m-d G:i:s");
-            $expirely = date("Y-m-d G:i:s", strtotime($d .' + 10 minute'));
+            $expirely = date("Y-m-d G:i:s", strtotime($d .' + 60 minute'));
             $otp = Otp::create([
                 "user_id" => $user->id,
                 "pin" => rand(1000, 9999),
@@ -244,7 +244,7 @@ $router->post('request-otp', function () {
         $recipient['address'] = $user->email;
         $recipient['name'] = $user->username;
         $recipients[] = $recipient;
-        $sent = Utility::sendMail($recipients, "System OTP", "Hello {$user->first_name}, Your OTP for Systems backup is {$otp->pin }. The OTP expires at {$otp->expires_at} ");
+        $sent = Utility::sendMail($recipients, "System OTP", "Hello {$user->first_name}, Your OTP for Jumuia Referral Application is {$otp->pin }. The OTP expires at {$otp->expires_at} ");
         if(!$sent) throw new Exception("Error sending OTP");
         response(SUCCESS_RESPONSE_CODE, "OTP sent successfully");
     } catch (\Throwable $th) {
