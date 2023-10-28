@@ -67,7 +67,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2023-04-21T06:33:29.802Z",
-            "modified": "2023-09-21T09:28:44.554Z",
+            "modified": "2023-10-28T07:45:48.605Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -87,7 +87,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"password\": \"admin123\"\n}",
+                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"password\": \"123456\"\n}",
                 "form": []
             },
             "tests": []
@@ -257,7 +257,7 @@
             "method": "POST",
             "sortNum": 130000,
             "created": "2023-04-23T08:01:54.330Z",
-            "modified": "2023-04-23T08:08:57.540Z",
+            "modified": "2023-10-28T07:47:52.985Z",
             "headers": [
                 {
                     "name": "TOKEN",
@@ -267,7 +267,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+                "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"waiting\"\n}",
                 "form": []
             },
             "tests": []

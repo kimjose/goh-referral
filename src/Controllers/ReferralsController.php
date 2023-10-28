@@ -25,7 +25,7 @@ class ReferralsController extends Controller {
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
             $activeReferrals = PatientReferral::where(function($query){
                 $query->where('status', 'waiting')->orWhere('status', 'pending procedure');
-            })->where('patient_id', $data['patient_id']);
+            })->where('patient_id', $data['patient_id'])->get();
             if(sizeof($activeReferrals) > 0) throw new \Exception("Patient has active referrals.");
             $data['created_by'] = $this->user->id;
             $referral = PatientReferral::create($data);
