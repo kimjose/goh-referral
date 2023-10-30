@@ -108,7 +108,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="./index?page=analytics-patients" class="nav-link nav-analytics-patients tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Patients Report</p>

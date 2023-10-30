@@ -17,7 +17,7 @@ if (isset($_GET['submit'])) {
 
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <input name="page" type="text" hidden value="analytics-referrals">
+                    <input name="page" type="text" hidden value="analytics-users">
                     <div class="form-group">
                         <label for="inputStartDate">Start Date</label>
                         <input type="date" name="start_date" id="inputStartDate" class="form-control" required value="<?php echo $submit ? $start_date : '' ?>">
@@ -38,48 +38,30 @@ if (isset($_GET['submit'])) {
         <div class="justify-content-center">
             <?php
             if ($submit) :
-                $query = "select  pr.*, p.phone_no, concat(p.surname, ' ', p.first_name, ' ', p.other_names) patient_name, p.dob, DATEDIFF(CURDATE(), p.dob) div 365.25 as 'currage',
-                d.name department, CONCAT(u.first_name, ' ', u.surname) as referred_by
-                from patient_referrals pr left join patients p on p.id = pr.patient_id
-                left join departments d on d.id = pr.department_id
-                left join users u on u.id = pr.created_by where pr.created_at BETWEEN '{$start_date}' and '{$end_date}' ;";
-                $referrals = DB::select($query);
+                $query = "select u.*, uc.name user_category, (select count(patient_id) from patient_referrals where created_by = u.id and created_at BETWEEN '{$start_date}' and '{$end_date}') 'referrals_done' from users u left join user_categories uc on u.category_id = uc.id";
+                $users = DB::select($query);
             ?>
                 <div class="table-responsive">
                     <table id="tableReferrals" class="table table-striped table-bordered">
                         <thead>
-                            <th>Patient Name</th>
-                            <th>DOB</th>
-                            <th>Age</th>
-                            <th>Department</th>
-                            <th>Diagnosis</th>
-                            <th>Presenting Problem</th>
-                            <th>Investigations</th>
-                            <th>Procedures Done</th>
-                            <th>Treatment Given</th>
-                            <th>Referral reason</th>
-                            <th>Referral Urgency</th>
-                            <th>Referred By</th>
-                            <th>Referred At</th>
+                            <th>User Name</th>
+                            <th>User Category</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Referrals Done</th>
+                            <th>Last login</th>
                             <th>Status</th>
                         </thead>
                         <tbody>
-                            <?php foreach ($referrals as $referral) : ?>
+                            <?php foreach ($users as $user) : ?>
                                 <tr>
-                                    <td><?php echo $referral->patient_name ?></td>
-                                    <td><?php echo $referral->dob ?></td>
-                                    <td><?php echo $referral->currage ?></td>
-                                    <td><?php echo $referral->department ?></td>
-                                    <td><?php echo $referral->diagnosis ?></td>
-                                    <td><?php echo $referral->presenting_problem ?></td>
-                                    <td><?php echo $referral->investigations ?></td>
-                                    <td><?php echo $referral->procedures_done ?></td>
-                                    <td><?php echo $referral->treatment_given ?></td>
-                                    <td><?php echo $referral->referral_reason ?></td>
-                                    <td><?php echo $referral->referral_urgency ?></td>
-                                    <td><?php echo $referral->referred_by ?></td>
-                                    <td><?php echo $referral->created_at ?></td>
-                                    <td><?php echo $referral->status ?></td>
+                                    <td><?php echo $user->surname . ' ' . $user->first_name . ' ' . $user->middle_name ?></td>
+                                    <td><?php echo $user->user_category ?></td>
+                                    <td><?php echo $user->email ?></td>
+                                    <td><?php echo $user->phone_number ?></td>
+                                    <td><?php echo $user->referrals_done ?></td>
+                                    <td><?php echo $user->last_login ?></td>
+                                    <td><?php echo $user->status ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
