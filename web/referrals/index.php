@@ -34,7 +34,7 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table id="tableReferrals" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -99,6 +99,11 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
 </div>
 
 <script>
+    const tableReferrals = document.getElementById('tableReferrals');
+    $(document).ready(function() {
+        tableReferrals.dataTable();
+    });
+
     function updateStatus(status, id) {
         customConfirm('Update Status', "Are you sure you want to update the status of this referral?", () => {
             fetch('referral/update-status', {

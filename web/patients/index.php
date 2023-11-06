@@ -39,7 +39,7 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id="tablePatients">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -99,3 +99,9 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
         </div>
     </div>
 </div>
+<script>
+    const tablePatients = document.getElementById('tablePatients');
+    $(document).ready(function() {
+        tablePatients.dataTable();
+    });
+</script>
