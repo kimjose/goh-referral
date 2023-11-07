@@ -102,6 +102,6 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
 <script>
     const tablePatients = document.getElementById('tablePatients');
     $(document).ready(function() {
-        tablePatients.dataTable();
+        $(tablePatients).dataTable();
     });
 </script>

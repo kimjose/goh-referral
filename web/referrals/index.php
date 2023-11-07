@@ -101,7 +101,7 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
 <script>
     const tableReferrals = document.getElementById('tableReferrals');
     $(document).ready(function() {
-        tableReferrals.dataTable();
+        $(tableReferrals).dataTable();
     });
 
     function updateStatus(status, id) {
