@@ -37,7 +37,7 @@ $router->get('/facilities', function () {
     response(SUCCESS_RESPONSE_CODE, "Facilities", $facilities);
 });
 $router->get('/departments', function () {
-    $departments = Department::all();
+    $departments = Department::where('deleted', 0)->get();
     response(SUCCESS_RESPONSE_CODE, "Departments", $departments);
 });
 $router->get('/insurances/all', function(){
@@ -196,7 +196,11 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateDepartment($id, $data);
     });
-
+    $router->post('/department/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteDepartment($data);
+    });
     $router->post('/insurance/create', function () {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);

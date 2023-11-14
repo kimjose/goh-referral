@@ -8,7 +8,7 @@ use Infinitops\Referral\Models\Department;
 <?php
 
 
-$departments = Department::all();
+$departments = Department::where('deleted', 0)->get();
 ?>
 
 
@@ -61,7 +61,7 @@ $departments = Department::all();
                                     <button class="btn btn-primary btn-flat" data-tooltip="tooltip" title="Edit Department" onclick='editDepartment(<?php echo json_encode($department); ?>)' data-toggle="modal" data-target="#modalDepartment">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-flat delete_survey" data-tooltip="tooltip" title="Delete Department" data-id="<?php echo $facility->id ?>" onclick='deleteDepartment(<?php echo json_encode($department); ?>)'>
+                                    <button type="button" class="btn btn-danger btn-flat delete_survey" data-tooltip="tooltip" title="Delete Department" data-id="<?php echo $department->id ?>" onclick='deleteDepartment(<?php echo json_encode($department->id); ?>)'>
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -169,8 +169,34 @@ $departments = Department::all();
 
 
 
-    function deleteDepartment(department) {
-        // TODO
+    function deleteDepartment(id) {
+        let r = confirm('Are you sure you want to delete this department?')
+        if(r){
+        start_load()
+		fetch('department/delete', {
+				method: 'POST',
+				body: JSON.stringify({id: id}),
+				headers: {
+					"content-type": "application/x-www-form-urlencoded"
+				}
+			})
+			.then(response => {
+				return response.json()
+			})
+			.then(response => {
+				if (response.code === 200) {
+					toastr.success(response.message)
+					setTimeout(() => {
+						window.location.reload()
+					}, 800)
+				} else throw new Error(response.message)
+			})
+			.catch(error => {
+				end_load()
+				console.log(error.message);
+				toastr.error(error.message)
+			})
+        }
     }
 
     initialize()

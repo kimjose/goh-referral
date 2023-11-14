@@ -372,6 +372,22 @@ public function deleteUser($data){
         }
     }
 
+    public function deleteDepartment($data){
+        try{
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $department = Department::find($data['id']);
+            $department->deleted = 1;
+            $department->deleted_by = $this->user->id;
+            $department->save();
+            response(SUCCESS_RESPONSE_CODE, "Department deleted successfully", $department);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
     public function createInsurance($data){
         try {
             if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
