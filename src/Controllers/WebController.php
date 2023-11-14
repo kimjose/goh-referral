@@ -217,7 +217,22 @@ class WebController
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
         }
     }
-
+    
+public function deleteUser($data){
+    try{
+        $attributes = ['id'];
+        $missing = Utility::checkMissingAttributes($data, $attributes);
+        throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+        $user = User::find($data['id']);
+        $user->deleted = 1;
+        $user->deleted_by = $this->user->id;
+        $user->save();
+        response(SUCCESS_RESPONSE_CODE, "User deleted successfully", $user);
+    } catch (\Throwable $th) {
+        Utility::logError($th->getCode(), $th->getMessage());
+        response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+    }
+}
 
     public function updateUserProfile($id, $data)
     {

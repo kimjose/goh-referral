@@ -2,7 +2,7 @@
 
 use Infinitops\Referral\Models\User;
 
-$users = User::all();
+$users = User::where('deleted', 0)->get();
 $activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
 $inactiveBadge = "<span class=\"badge badge-secondary rounded-pill\">Inactive</span>";
 
@@ -74,7 +74,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 		// 	uni_modal("<i class='fa fa-id-card'></i> User Details", "users/view?id=" + $(this).attr('data-id'))
 		// })
 		$('.delete_user').click(function() {
-			_conf("Are you sure to delete this user?", "delete_user", [$(this).attr('data-id')])
+			_conf("Are you sure you want to delete this user?", "delete_user", [$(this).attr('data-id')])
 		})
 		$('.activate_user_account').click(() => {
 			let el = document.querySelector(".activate_user_account")
@@ -109,26 +109,34 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 		})
 	})
 
-	function delete_user($id) {
-		let r = confirm('Are you sure you want to delete this user?')
-		if (r) {
-			start_load()
-			$.ajax({
-				url: 'ajax.php?action=delete_user',
+	function delete_user(id) {
+		let data = {
+			id: id
+		}
+		start_load()
+		fetch('user/delete', {
 				method: 'POST',
-				data: {
-					id: $id
-				},
-				success: function(resp) {
-					if (resp == 1) {
-						alert_toast("Data successfully deleted", 'success')
-						setTimeout(function() {
-							location.reload()
-						}, 1500)
-
-					}
+				body: JSON.stringify(data),
+				headers: {
+					"content-type": "application/x-www-form-urlencoded"
 				}
 			})
-		}
+			.then(response => {
+				return response.json()
+			})
+			.then(response => {
+				if (response.code === 200) {
+					toastr.success(response.message)
+					setTimeout(() => {
+						window.location.reload()
+					}, 800)
+				} else throw new Error(response.message)
+			})
+			.catch(error => {
+				end_load()
+				console.log(error.message);
+				toastr.error(error.message)
+			})
+
 	}
 </script>

@@ -171,6 +171,11 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->activateUserAccount($data);
     });
+    $router->post('/user/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteUser($data);
+    });
     $router->post('/user/update/{id}', function ($id) {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
