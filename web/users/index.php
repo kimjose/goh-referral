@@ -50,8 +50,6 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 										Action
 									</button>
 									<div class="dropdown-menu">
-										<a class="dropdown-item users-view" href="javascript:void(0)" data-id="<?php echo $user->id ?>">View</a>
-										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href="./index?page=users-edit&id=<?php echo $user->id ?>">Edit</a>
 										<?php if ($user->status == "Inactive") : ?>
 											<div class="dropdown-divider"></div>
@@ -72,9 +70,9 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 <script>
 	$(document).ready(function() {
 		$('#list').dataTable()
-		$('.view_user').click(function() {
-			uni_modal("<i class='fa fa-id-card'></i> User Details", "users/view?id=" + $(this).attr('data-id'))
-		})
+		// $('.view_user').click(function() {
+		// 	uni_modal("<i class='fa fa-id-card'></i> User Details", "users/view?id=" + $(this).attr('data-id'))
+		// })
 		$('.delete_user').click(function() {
 			_conf("Are you sure to delete this user?", "delete_user", [$(this).attr('data-id')])
 		})
