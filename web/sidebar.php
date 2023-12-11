@@ -90,6 +90,44 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="./index?page=insurances" class="nav-link nav-insurances">
+              <img src="assets/img/health-insurance.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Insurances
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-analytics">
+              <img src="assets/img/analytics.png" class="nav-icon" alt="" srcset="">
+              <p>
+                Analytics
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item d-none">
+                <a href="./index?page=analytics-patients" class="nav-link nav-analytics-patients tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Patients Report</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=analytics-users" class="nav-link nav-analytics-users tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Users Report</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index?page=analytics-referrals" class="nav-link nav-analytics-referrals tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Referrals Report</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>

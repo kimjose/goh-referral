@@ -2,13 +2,13 @@
 
 /** @var Umb\EventsManager\Models\User $currUser */
 
-use Infinitops\Referral\Models\Department;
+use Infinitops\Referral\Models\Insurance;
 
 ?>
 <?php
 
 
-$departments = Department::where('deleted', 0)->get();
+$insurances = Insurance::where('deleted', 0)->get();
 ?>
 
 
@@ -18,21 +18,21 @@ $departments = Department::where('deleted', 0)->get();
         <li class="breadcrumb-item">
             <a href="index">Home</a>
         </li>
-        <li class="breadcrumb-item active"> Departments </li>
+        <li class="breadcrumb-item active"> Insurances </li>
     </ol>
 
 </div>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <button class="btn btn-primary ml-auto float-right btn-icon-split" data-toggle="modal" data-target="#modalDepartment" id="btnAddDepartment">
+        <button class="btn btn-primary ml-auto float-right btn-icon-split" data-toggle="modal" data-target="#modalInsurance" id="btnAddInsurance">
             <span class="icon text-white-50"><i class="fa fa-plus"></i> </span>
-            <span class="text"> Add Department</span>
+            <span class="text"> Add Insurance</span>
         </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped" id="tableDepartments">
+            <table class="table table-bordered table-striped" id="tableInsurances">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -50,18 +50,18 @@ $departments = Department::where('deleted', 0)->get();
                 <tbody>
                     <?php
                     $i = 1;
-                    foreach ($departments as $department) :
+                    foreach ($insurances as $insurance) :
                     ?>
                         <tr>
                             <td><?php echo $i ?></td>
-                            <td><?php echo $department->name ?></td>
+                            <td><?php echo $insurance->name ?></td>
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-flat" data-tooltip="tooltip" title="Edit Department" onclick='editDepartment(<?php echo json_encode($department); ?>)' data-toggle="modal" data-target="#modalDepartment">
+                                    <button class="btn btn-primary btn-flat" data-tooltip="tooltip" title="Edit Insurance" onclick='editInsurance(<?php echo json_encode($insurance); ?>)' data-toggle="modal" data-target="#modalInsurance">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-flat delete_survey" data-tooltip="tooltip" title="Delete Department" data-id="<?php echo $department->id ?>" onclick='deleteDepartment(<?php echo json_encode($department->id); ?>)'>
+                                    <button type="button" class="btn btn-danger btn-flat delete_insurance" data-tooltip="tooltip" title="Delete Insurance" data-id="<?php echo $insurance->id ?>" onclick='deleteInsurance(<?php echo json_encode($insurance); ?>)'>
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -76,59 +76,59 @@ $departments = Department::where('deleted', 0)->get();
     </div>
 </div>
 
-<!-- Department Dialog -->
-<div class="modal fade" id="modalDepartment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Insurance Dialog -->
+<div class="modal fade" id="modalInsurance" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Department Dialog</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Insurance Dialog</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form action="" method="POST" onsubmit="event.preventDefault();" id="formDepartment">
+            <form action="" method="POST" onsubmit="event.preventDefault();" id="formInsurance">
 
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="inputName">Department Name</label>
-                        <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter department name" required>
+                        <label for="inputName">Insurance Name</label>
+                        <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter insurance name" required>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" name="savebtn" id="btnSaveDepartment" class="btn btn-primary" onclick="saveDepartment()">Save
+                    <button type="submit" name="savebtn" id="btnSaveInsurance" class="btn btn-primary" onclick="saveInsurance()">Save
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Department Dialog end-->
+<!-- Insurance Dialog end-->
 
 <script type="text/javascript">
     const inputName = document.querySelector("#inputName");
     let editedId = "";
 
     $(document).ready(function() {
-        $('#tableDepartments').dataTable()
+        $('#tableInsurances').dataTable()
     })
 
     function initialize() {
-        $("#modalDepartment").on("hide.bs.modal", () => {
+        $("#modalInsurance").on("hide.bs.modal", () => {
             editedId = ''
-            document.querySelector("#formDepartment").reset()
+            document.querySelector("#formInsurance").reset()
         });
     }
 
-    function editDepartment(department) {
-        editedId = department.id;
-        inputName.value = department.name
+    function editInsurance(insurance) {
+        editedId = insurance.id;
+        inputName.value = insurance.name
     }
 
-    function saveDepartment() {
-        let btnSaveDepartment = document.getElementById('btnSaveDepartment')
+    function saveInsurance() {
+        let btnSaveInsurance = document.getElementById('btnSaveInsurance')
         let name = inputName.value.trim();
         if (name === '') {
             inputUsername.focus()
@@ -137,9 +137,9 @@ $departments = Department::where('deleted', 0)->get();
         let data = {
             name: name,
         }
-        let saveUrl = 'department/create'
-        let updateUrl = 'department/update/' + editedId
-        btnSaveDepartment.setAttribute('disabled', '')
+        let saveUrl = 'insurance/create'
+        let updateUrl = 'insurance/update/' + editedId
+        btnSaveInsurance.setAttribute('disabled', '')
         fetch(
                 editedId === "" ? saveUrl : updateUrl, {
                     method: "POST",
@@ -154,13 +154,13 @@ $departments = Department::where('deleted', 0)->get();
             })
             .then(response => {
                 if (response.code === 200) {
-                    toastr.success("department saved successfully.")
+                    toastr.success("insurance saved successfully.")
                     window.location.reload()
                 } else throw new Error(response.message)
                 // hideModal(dialogId)
             })
             .catch(error => {
-                btnSaveDepartment.removeAttribute('disabled')
+                btnSaveInsurance.removeAttribute('disabled')
                 console.log(error.message);
                 toastr.error(error.message)
             })
@@ -169,33 +169,28 @@ $departments = Department::where('deleted', 0)->get();
 
 
 
-    function deleteDepartment(id) {
-        let r = confirm('Are you sure you want to delete this department?')
-        if(r){
-        start_load()
-		fetch('department/delete', {
-				method: 'POST',
-				body: JSON.stringify({id: id}),
-				headers: {
-					"content-type": "application/x-www-form-urlencoded"
-				}
-			})
-			.then(response => {
-				return response.json()
-			})
-			.then(response => {
-				if (response.code === 200) {
-					toastr.success(response.message)
-					setTimeout(() => {
-						window.location.reload()
-					}, 800)
-				} else throw new Error(response.message)
-			})
-			.catch(error => {
-				end_load()
-				console.log(error.message);
-				toastr.error(error.message)
-			})
+    function deleteInsurance(insurance) {
+        let r = confirm('Are you sure you want to delete this insurance?')
+        if (r) {
+            fetch("insurance/delete", {
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded"
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: insurance.id
+                    })
+                })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.code == 200) {
+                        toastr.success("insurance deleted successfully.")
+                        setTimeout(() => location.reload(), 897)
+                    } else throw new Exception(response.message)
+                })
+                .error(err => {
+                    toastr.error(err.message)
+                })
         }
     }
 

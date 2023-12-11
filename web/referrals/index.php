@@ -6,6 +6,7 @@ $referrals = PatientReferral::all();
 
 $activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
 $referredBadge = "<span class=\"badge badge-warning rounded-pill\">Referred Elsewhere</span>";
+$pendingBadge = "<span class=\"badge badge-warning rounded-pill\">Pending Procedure</span>";
 $completedBadge = "<span class=\"badge badge-success rounded-pill\">Completed</span>";
 $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</span>";
 
@@ -33,7 +34,7 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table id="tableReferrals" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -71,7 +72,7 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
                             <td><?php echo $referral->referral_urgency ?></td>
                             <td><?php echo $referral->created_at ?></td>
                             <td><?php
-                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : ($referral->status == 'referred' ? $referredBadge : $cancelledBadge))
+                                echo ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : ($referral->status == 'referred' ? $referredBadge : ($referral->status == 'pending procedure' ? $pendingBadge : $cancelledBadge)))
                                 ?></td>
                             <td>
                                 <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
@@ -98,6 +99,11 @@ if (!hasPermission(PERM_MANAGE_REFERRALS, $currUser)) :
 </div>
 
 <script>
+    const tableReferrals = document.getElementById('tableReferrals');
+    $(document).ready(function() {
+        $(tableReferrals).dataTable();
+    });
+
     function updateStatus(status, id) {
         customConfirm('Update Status', "Are you sure you want to update the status of this referral?", () => {
             fetch('referral/update-status', {

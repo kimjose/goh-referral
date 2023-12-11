@@ -11,6 +11,7 @@ use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\PatientReferral;
 use Infinitops\Referral\Controllers\Utils\Utility;
 use Infinitops\Referral\Models\Department;
+use Infinitops\Referral\Models\Insurance;
 
 class WebController
 {
@@ -200,6 +201,39 @@ class WebController
         }
     }
 
+    public function activateUserAccount($data){
+        try{
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $user = User::find($data['id']);
+            if($user == null || $user->status == "Active") throw new \Exception("User not found or is already active.");
+            $user->status = "Active";
+            $user->activated_by = $this->user->id;
+            $user->save();
+            response(SUCCESS_RESPONSE_CODE, "User activated", $user);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+    
+public function deleteUser($data){
+    try{
+        $attributes = ['id'];
+        $missing = Utility::checkMissingAttributes($data, $attributes);
+        throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+        $user = User::find($data['id']);
+        $user->deleted = 1;
+        $user->deleted_by = $this->user->id;
+        $user->save();
+        response(SUCCESS_RESPONSE_CODE, "User deleted successfully", $user);
+    } catch (\Throwable $th) {
+        Utility::logError($th->getCode(), $th->getMessage());
+        response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+    }
+}
+
     public function updateUserProfile($id, $data)
     {
         try {
@@ -332,6 +366,74 @@ class WebController
             $department->name = $data['name'];
             $department->save();
             response(SUCCESS_RESPONSE_CODE, "The department has been updated successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function deleteDepartment($data){
+        try{
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $department = Department::find($data['id']);
+            $department->deleted = 1;
+            $department->deleted_by = $this->user->id;
+            $department->save();
+            response(SUCCESS_RESPONSE_CODE, "Department deleted successfully", $department);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function createInsurance($data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Insurance::where('name', $data['name'])->first();
+            throw_if($exists != null, new \Exception("Insurance already exists.", -1));
+            $data['created_by'] = $this->user->id;
+            Insurance::create($data);
+            response(SUCCESS_RESPONSE_CODE, "The department has been added successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function updateInsurance($id, $data){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['name'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $exists = Insurance::where('name', $data['name'])->where('id','!=', $id)->first();
+            throw_if($exists != null, new \Exception("Department already exists.", -1));
+            $insurance = Insurance::findOrFail($id);
+            $insurance->name = $data['name'];
+            $insurance->save();
+            response(SUCCESS_RESPONSE_CODE, "The insurance has been updated successfully");
+        } catch (\Throwable $th){
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
+
+    public function deleteInsurance($data){
+        try{
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ['id'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            $insurance = Insurance::find($data['id']);
+            if($insurance == null) throw new \Exception("Insurance not found", -1);
+            $insurance->deleted = 1;
+            $insurance->deleted_by = $this->user->id;
+            $insurance->save();
+            response(SUCCESS_RESPONSE_CODE, "The insurance has been removed successfully");
         } catch (\Throwable $th){
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

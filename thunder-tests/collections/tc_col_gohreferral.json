@@ -67,12 +67,27 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2023-04-21T06:33:29.802Z",
-            "modified": "2023-04-21T06:55:31.349Z",
-            "headers": [],
+            "modified": "2023-10-28T07:45:48.605Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                },
+                {
+                    "name": "UUID",
+                    "value": "{e4952fb5-5b0b-4d4e-a4be-aec7ac7d9010}"
+                }
+            ],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"password\": \"admin123\"\n}",
+                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"password\": \"123456\"\n}",
                 "form": []
             },
             "tests": []
@@ -124,7 +139,7 @@
             "method": "POST",
             "sortNum": 60000,
             "created": "2023-04-21T06:33:29.805Z",
-            "modified": "2023-05-02T19:16:22.643Z",
+            "modified": "2023-10-21T08:44:17.490Z",
             "headers": [
                 {
                     "name": "TOKEN",
@@ -134,7 +149,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"surname\": \"Kamau\",\n  \"first_name\": \"John\",\n  \"other_names\": \"Zuckeberg Antony\",\n  \"gender\": \"male\",\n  \"dob\": \"1956-06-07\",\n  \"marital_status\": \"married\",\n  \"education\": \"High School\",\n  \"primary_occupation\": \"rider\",\n  \"identifier\": \"3476892\",\n  \"identifier_type\": \"National ID\",\n  \"phone_no\": \"0712908657\",\n  \"alt_phone_no\": \"\",\n  \"email\": \"\",\n  \"nationality\": \"Kenyan\",\n  \"county_code\": 47,\n  \"sub_county\": 200,\n  \"nearest_health_centre\": \"Kibera Community Amref\",\n  \"nok_name\": \"Javan Masinga\",\n  \"nok_relationship\": \"Son\",\n  \"nok_phone_no\": \"0729099099\",\n  \"has_nhif\": 1,\n  \"nhif_number\": \"789JL098\",\n  \"preferred_mop\": \"Cash\"\n}",
+                "raw": "{\n  \"surname\": \"Kamau\",\n  \"first_name\": \"John\",\n  \"other_names\": \"Zuckeberg Antony\",\n  \"gender\": \"male\",\n  \"dob\": \"1956-06-07\",\n  \"marital_status\": \"married\",\n  \"education\": \"High School\",\n  \"primary_occupation\": \"rider\",\n  \"identifier\": \"3476894\",\n  \"identifier_type\": \"National ID\",\n  \"phone_no\": \"0712908657\",\n  \"alt_phone_no\": \"\",\n  \"email\": \"\",\n  \"nationality\": \"Kenyan\",\n  \"county_code\": 47,\n  \"sub_county\": 200,\n  \"nearest_health_centre\": \"Kibera Community Amref\",\n  \"nok_name\": \"Javan Masinga\",\n  \"nok_relationship\": \"Son\",\n  \"nok_phone_no\": \"0729099099\",\n  \"has_nhif\": 1,\n  \"nhif_active\": 1,\n  \"preferred_mop\": \"Cash\",\n  \"other_insurance\": \"1,2\"\n}",
                 "form": []
             },
             "tests": []
@@ -195,11 +210,11 @@
             "method": "GET",
             "sortNum": 100000,
             "created": "2023-04-22T15:44:58.629Z",
-            "modified": "2023-04-22T15:51:33.062Z",
+            "modified": "2023-10-10T07:02:46.245Z",
             "headers": [
                 {
                     "name": "TOKEN",
-                    "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpbmZpbml0b3BzIiwiaWF0IjoxNjgyMTc4NDE5LCJleHAiOjE2ODIxNzkwMTksImRhdGEiOnsiaWQiOjF9fQ.XDC4Q4SPiL0dZv7_a9kTMqdQKzIN-D1XOCRPyOrA27vSSyvfFI4fdDfmlluqD0AY6GDHKQQbqSCKm9U_1MQjSRxQ1BrRJKKSs4oVTk2cCAuyNF3w5kWZ0X_Ingmnxc_xBC3EwIMZC-5U1yaRpCOAvgfZtOY4xINeO5dLBxgvPWCKz7euQnGUVQP360C46gBQywRpukOrOwm0NhCbP1r7T7jC15h4KJP1NOaXcuMje9dd4sGyngaheTQnA64Itx_e3anFE6YXAZo_6ptOXK6mdXcYiUfr0ZjrvETOuM7IPN5JNvGOpIafqCDIa7Y2E8VsaiNPBMBer4Tax3Wh9d_oGg"
+                    "value": "{{token}}"
                 }
             ],
             "params": [],
@@ -242,7 +257,7 @@
             "method": "POST",
             "sortNum": 130000,
             "created": "2023-04-23T08:01:54.330Z",
-            "modified": "2023-04-23T08:08:57.540Z",
+            "modified": "2023-10-28T07:47:52.985Z",
             "headers": [
                 {
                     "name": "TOKEN",
@@ -252,7 +267,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"Active\"\n}",
+                "raw": "{\n  \"patient_id\": 1,\n  \"facility_id\": 2,\n  \"department_id\": 1,\n  \"diagnosis\": \"Malaria\",\n  \"presenting_problem\": \"presenting_problem\",\n  \"investigations\": \"investigations\",\n  \"procedures_done\": \"procedures_done\",\n  \"treatment_given\": \"treatment_given this\",\n  \"referral_reason\": \"referral_reason\",\n  \"referral_urgency\": \"Urgent\",\n  \"status\": \"waiting\"\n}",
                 "form": []
             },
             "tests": []
@@ -328,12 +343,12 @@
             "method": "POST",
             "sortNum": 170000,
             "created": "2023-06-19T03:44:34.731Z",
-            "modified": "2023-06-20T17:22:34.229Z",
+            "modified": "2023-10-27T21:21:01.708Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"pin\": 2149,\n  \"password\": \"admin123\"\n}",
+                "raw": "{\n  \"phone_number\": \"0717845485\",\n  \"pin\": 9905,\n  \"password\": \"admin123\"\n}",
                 "form": []
             },
             "tests": []
@@ -348,6 +363,39 @@
             "sortNum": 180000,
             "created": "2023-07-01T12:57:14.186Z",
             "modified": "2023-07-01T12:58:02.201Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "249392c1-064c-4701-aa05-a0c4868cdea3",
+            "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+            "containerId": "",
+            "name": "search patients",
+            "url": "{{base_url}}patient/search_patients/34467532",
+            "method": "GET",
+            "sortNum": 105000,
+            "created": "2023-10-10T08:24:54.591Z",
+            "modified": "2023-10-10T09:37:42.020Z",
+            "headers": [
+                {
+                    "name": "TOKEN",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "fa4a129b-ecfa-42b9-8aec-168e632000ff",
+            "colId": "8faf6d00-e190-4b34-b7e4-a4990d35f446",
+            "containerId": "",
+            "name": "Get insurances",
+            "url": "{{base_url}}insurances/all",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2023-10-21T07:58:57.274Z",
+            "modified": "2023-10-21T07:59:15.912Z",
             "headers": [],
             "params": [],
             "tests": []

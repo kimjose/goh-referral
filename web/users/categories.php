@@ -25,7 +25,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 			<?php endif; ?>
 		</div>
 		<div class="card-body">
-			<table class="table table-hover table-bordered">
+			<table class="table table-hover table-bordered" id="tableCategories">
 				<thead>
 					<tr>
 						<th class="text-center">#</th>
@@ -152,6 +152,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 			editedId = ''
 			document.querySelector("#formUserCategory").reset()
 		});
+		$("#tableCategories").dataTable()
 
 	}
 

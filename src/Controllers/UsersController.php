@@ -57,7 +57,8 @@ class UsersController extends Controller
         }
     }
 
-    public function getUsers(){
+    public function getUsers()
+    {
         try {
             $this->verifyTokenAuth();
             response(SUCCESS_RESPONSE_CODE, "Users", User::all());
@@ -73,7 +74,7 @@ class UsersController extends Controller
             $attributes = ['phone_number', 'password'];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
-            $user = User::where('phone_number', $data['phone_number'])->first();
+            $user = User::where('phone_number', $data['phone_number'])->where("deleted", 0)->first();
             if ($user == null) throw new \Exception("User does not exist", -1);
             if (password_verify($data['password'], $user->password)) {
                 $user->last_login = date("Y:m:d h:i:s", time());
@@ -105,7 +106,8 @@ class UsersController extends Controller
         }
     }
 
-    public function register($data){
+    public function register($data)
+    {
         try {
             $attributes = ['first_name', 'middle_name', 'surname', 'email', 'phone_number', 'password', 'category_id'];
             $missing = Utility::checkMissingAttributes($data, $attributes);
@@ -124,12 +126,51 @@ class UsersController extends Controller
         }
     }
 
-    public function getUserCategories(){
+    public function getUserCategories()
+    {
         $userCategories = DB::select("select * from user_categories uc where '1' in (uc.permissions);");
         response(SUCCESS_RESPONSE_CODE, "User categories", $userCategories);
     }
 
-    public function getLoggedInUser(){
+    public function updateUserProfile($data)
+    {
+        try {
+            $this->verifyTokenAuth();
+            $user = $this->user;
+            if ($data['password'] == '') {
+                unset($data['password']);
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            $user->update($data);
+            response(SUCCESS_RESPONSE_CODE, "User profile updated successfully.");
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(UNAUTHORIZED_ERROR_CODE, "Unable to proceed. Try again later::" . $th->getMessage());
+        }
+    }
+
+    public function updatePassword($data)
+    {
+        try {
+            $this->verifyTokenAuth();
+            $attributes = ['old_password', 'password'];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $user = $this->user;
+            if (password_verify($data['old_password'], $user->password)){
+                $user->password = password_hash($data['password'], PASSWORD_DEFAULT);
+                $user->save();
+                response(SUCCESS_RESPONSE_CODE, "Password updated successfully.");
+            } else throw new \Exception('Old password is incorrect', -1);
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(UNAUTHORIZED_ERROR_CODE, "Unable to proceed. Try again later::" . $th->getMessage());
+        }
+    }
+
+    public function getLoggedInUser()
+    {
         try {
             $data = $this->verifyTokenAuth();
             $userData = $data['data'];
@@ -139,5 +180,4 @@ class UsersController extends Controller
             response(UNAUTHORIZED_ERROR_CODE, "Unable to login. Try again later::" . $th->getMessage());
         }
     }
-
 }

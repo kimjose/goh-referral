@@ -38,6 +38,7 @@ $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 //CONSTANTs
+define('APP_MIN_VERSION_CODE', $_ENV['APP_MIN_VERSION_CODE'] ?? 3);
 define('TOKEN_TIME', $_ENV["TOKEN_TIME"] ?? 480);
 define("SUCCESS_RESPONSE_CODE", 200);
 define("NO_CONTENT_RESPONSE_CODE", 204);

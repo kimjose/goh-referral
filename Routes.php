@@ -5,6 +5,7 @@ use Infinitops\Referral\Models\Otp;
 use Infinitops\Referral\Models\User;
 use Infinitops\Referral\Models\County;
 use Infinitops\Referral\Models\Facility;
+use Infinitops\Referral\Models\Insurance;
 use Infinitops\Referral\Models\SubCounty;
 use Infinitops\Referral\Models\Department;
 use Infinitops\Referral\Controllers\Utils\Utility;
@@ -36,8 +37,12 @@ $router->get('/facilities', function () {
     response(SUCCESS_RESPONSE_CODE, "Facilities", $facilities);
 });
 $router->get('/departments', function () {
-    $departments = Department::all();
+    $departments = Department::where('deleted', 0)->get();
     response(SUCCESS_RESPONSE_CODE, "Departments", $departments);
+});
+$router->get('/insurances/all', function(){
+    $insurances = Insurance::where('deleted', 0)->get();
+    response(SUCCESS_RESPONSE_CODE, "Insurances", $insurances);
 });
 $router->mount('/user', function () use ($router) {
     $controller = new UsersController();
@@ -63,6 +68,12 @@ $router->mount('/user', function () use ($router) {
     $router->post('/register', function () use ($controller, $data) {
         $controller->register($data);
     });
+    $router->post('/update_profile', function () use ($controller, $data) {
+        $controller->updateUserProfile($data);
+    });
+    $router->post('/update_password', function () use ($controller, $data) {
+        $controller->updatePassword($data);
+    });
 });
 $router->mount('/patient', function () use ($router) {
     //GET
@@ -73,6 +84,10 @@ $router->mount('/patient', function () use ($router) {
     $router->get('/search_by_identifier/{identifier}', function ($identifier) {
         $controller = new PatientsController();
         $controller->searchPatientByIdentifier($identifier);
+    });
+    $router->get('/search_patients/{searchString}', function($searchString){
+        $controller = new PatientsController();
+        $controller->searchPatient($searchString);
     });
 
     //POST
@@ -151,6 +166,16 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->createUser($data);
     });
+    $router->post('/user/activate', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->activateUserAccount($data);
+    });
+    $router->post('/user/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteUser($data);
+    });
     $router->post('/user/update/{id}', function ($id) {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
@@ -170,6 +195,26 @@ $router->mount('/web', function () use ($router) {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->updateDepartment($id, $data);
+    });
+    $router->post('/department/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteDepartment($data);
+    });
+    $router->post('/insurance/create', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->createInsurance($data);
+    });
+    $router->post('/insurance/update/{id}', function ($id) {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->updateInsurance($id, $data);
+    });
+    $router->post('/insurance/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteInsurance($data);
     });
     $router->post('/facility/create', function () {
         $controller = new WebController();
@@ -198,7 +243,7 @@ $router->post('request-otp', function () {
         $otp = Otp::where('user_id', $user->id)->where('is_used', 0)->where('expires_at', '>', date('Y-m-d H:i:s'))->first();
         if($otp == null) {
             $d = date("Y-m-d G:i:s");
-            $expirely = date("Y-m-d G:i:s", strtotime($d .' + 10 minute'));
+            $expirely = date("Y-m-d G:i:s", strtotime($d .' + 60 minute'));
             $otp = Otp::create([
                 "user_id" => $user->id,
                 "pin" => rand(1000, 9999),
@@ -208,7 +253,7 @@ $router->post('request-otp', function () {
         $recipient['address'] = $user->email;
         $recipient['name'] = $user->username;
         $recipients[] = $recipient;
-        $sent = Utility::sendMail($recipients, "System OTP", "Hello {$user->first_name}, Your OTP for Systems backup is {$otp->pin }. The OTP expires at {$otp->expires_at} ");
+        $sent = Utility::sendMail($recipients, "System OTP", "Hello {$user->first_name}, Your OTP for Jumuia Referral Application is {$otp->pin }. The OTP expires at {$otp->expires_at} ");
         if(!$sent) throw new Exception("Error sending OTP");
         response(SUCCESS_RESPONSE_CODE, "OTP sent successfully");
     } catch (\Throwable $th) {

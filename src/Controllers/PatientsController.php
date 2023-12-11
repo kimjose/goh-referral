@@ -24,7 +24,7 @@ class PatientsController extends Controller
             $attributes = [
                 "surname", "first_name", "other_names", "gender", "dob", "marital_status", "education", "primary_occupation",
                 "identifier", "identifier_type", "phone_no", "alt_phone_no", "email", "nationality", "county_code", "sub_county", "nearest_health_centre",
-                "nok_name", "nok_relationship", "nok_phone_no", "has_nhif", "nhif_number", "preferred_mop", "other_insurance"
+                "nok_name", "nok_relationship", "nok_phone_no", "has_nhif", "nhif_active", "preferred_mop", "other_insurance"
             ];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
@@ -73,9 +73,11 @@ class PatientsController extends Controller
     }
 
     public function searchPatient($searchString){
-        try{
-            $patients = [];
+        try {
             $patients = Patient::where('identifier', $searchString)->get();
+            if(sizeof($patients) > 0)
+                response(SUCCESS_RESPONSE_CODE, "Patients found", $patients);
+            else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());

@@ -6,6 +6,7 @@ $patients = Patient::all();
 
 $activeBadge = "<span class=\"badge badge-primary rounded-pill\">Active</span>";
 $referredBadge = "<span class=\"badge badge-warning rounded-pill\">Referred Elsewhere</span>";
+$pendingBadge = "<span class=\"badge badge-warning rounded-pill\">Pending Procedure</span>";
 $completedBadge = "<span class=\"badge badge-success rounded-pill\">Completed</span>";
 $cancelledBadge = "<span class=\"badge badge-danger rounded-pill\">Cancelled</span>";
 
@@ -38,7 +39,7 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id="tablePatients">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -80,7 +81,7 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
                             <td><?php echo $patient->phone_no ?></td>
                             <td><?php echo $patient->county()->name ?></td>
                             <td><?php echo $patient->subCounty()->name ?></td>
-                            <td><?php echo $patient->lastReferral() ? ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : ($referral->status == 'referred' ? $referredBadge : $cancelledBadge)) : '' ?></td>
+                            <td><?php echo $patient->lastReferral() ? ($referral->status == 'active' || $referral->status == 'waiting') ? $activeBadge : ($referral->status == 'completed' ? $completedBadge : ($referral->status == 'referred' ? $referredBadge : ($referral->status == 'pending procedure' ? $pendingBadge : $cancelledBadge))) : '' ?></td>
                             <td>
                                 <button class="btn btn-sm btn-flat btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                     Action <span class="sr-only">Toggle Drropdown</span>
@@ -98,3 +99,9 @@ if (!hasPermission(PERM_VIEW_PATIENTS, $currUser)) :
         </div>
     </div>
 </div>
+<script>
+    const tablePatients = document.getElementById('tablePatients');
+    $(document).ready(function() {
+        $(tablePatients).dataTable();
+    });
+</script>
