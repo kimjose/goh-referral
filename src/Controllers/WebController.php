@@ -73,7 +73,7 @@ class WebController
         }
     }
 
-    public function deleteUserCategory(){
+    public function deleteUserCategory($data){
         try {
             if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
             $attributes = ["id"];
