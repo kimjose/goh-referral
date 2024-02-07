@@ -73,6 +73,20 @@ class WebController
         }
     }
 
+    public function deleteUserCategory(){
+        try {
+            if(!hasPermission(PERM_SYSTEM_ADMINISTRATION, $this->user)) throw new \Exception("Forbidden", 403);
+            $attributes = ["id"];
+            $missing = Utility::checkMissingAttributes($data, $attributes);
+            throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
+            $userCategory = UserCategory::findOrFail($id);
+            $userCategory->delete();
+            response(SUCCESS_RESPONSE_CODE, "The user category deleted successfully.");
+        } catch (\Throwable $th) {
+            Utility::logError($th->getCode(), $th->getMessage());
+            response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
+        }
+    }
 
     public function createPatient($data)
     {
