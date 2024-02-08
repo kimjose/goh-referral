@@ -4,7 +4,7 @@
 use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\UserPermission;
 
-$categories = UserCategory::all();
+$categories = UserCategory::where('deleted', 0)->get();
 $permissions = UserPermission::all();
 
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
@@ -61,7 +61,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 
 									<button data-tooltip="tooltip" title="Edit Category" class="btn btn-light btn-circle btn-sm" onclick='editUserCategory(<?php echo json_encode($category); ?>)' data-toggle="modal" data-target="#modalUserCategory">
 										<i class="fa fa-edit text-primary"></i></button>
-									<button class="btn btn-light btn-circle btn-sm" data-tooltip="tooltip" title="Delete User" onclick='deleteUser(<?php echo json_encode($user); ?>)'><i class="text-danger fa fa-trash"></i></button>
+									<button class="btn btn-light btn-circle btn-sm" data-tooltip="tooltip" title="Delete User" onclick='deleteUserCategory(<?php echo json_encode($category); ?>)'><i class="text-danger fa fa-trash"></i></button>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -170,6 +170,32 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 
 	}
 
+	function deleteUserCategory(category){
+		customConfirm('Delete User category', "Are you sure you want to delete this user category? Note that you have to remove users under this category before deleting it.", () => {
+		fetch('user_category/delete', {
+				method: 'POST',
+				body: JSON.stringify({id: category.id}),
+				headers: {
+					"content-type": "application/x-www-form-urlencoded"
+				}
+			})
+			.then(response => {
+				return response.json()
+			})
+			.then(response => {
+				if (response.code === 200) {
+					toastr.success(response.message)
+					setTimeout(() => {
+						window.location.reload();
+					}, 800)
+				} else throw new Error(response.message)
+			})
+			.catch(error => {
+				console.log(error.message);
+				toastr.error(error.message)
+	})
+}, () => {})
+	}
 	function saveUserCategory() {
 		let formData = new FormData(formUserCategory)
 		let categoryData = {};

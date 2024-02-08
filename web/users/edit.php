@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
 
 /** @var Facility[] $facilities */
 $facilities = Facility::orderBy('name', 'asc')->get();
-$categories = UserCategory::all();
+$categories = UserCategory::where('deleted', 0)->get();
 
 ?>
 <div class="col-lg-12">

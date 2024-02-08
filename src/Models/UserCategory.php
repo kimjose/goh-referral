@@ -5,6 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserCategory extends Model{
     
-    protected $fillable = ['name', 'description', 'permissions'];
+    protected $fillable = ['name', 'description', 'permissions', 'deleted'];
 
 }

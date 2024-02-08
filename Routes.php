@@ -141,6 +141,11 @@ $router->mount('/web', function () use ($router) {
         $data = json_decode(file_get_contents('php://input'), true);
         $controller->createUserCategory($data);
     });
+    $router->post('/user_category/delete', function () {
+        $controller = new WebController();
+        $data = json_decode(file_get_contents('php://input'), true);
+        $controller->deleteUserCategory($data);
+    });
     $router->post('/user_category/update/{id}', function ($id) {
         $controller = new WebController();
         $data = json_decode(file_get_contents('php://input'), true);
