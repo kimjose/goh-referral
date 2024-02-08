@@ -128,7 +128,7 @@ class UsersController extends Controller
 
     public function getUserCategories()
     {
-        $userCategories = DB::select("select * from user_categories uc where '1' in (uc.permissions);");
+        $userCategories = DB::select("select * from user_categories uc where '1' in (uc.permissions) and deleted = 0;");
         response(SUCCESS_RESPONSE_CODE, "User categories", $userCategories);
     }
 

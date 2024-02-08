@@ -4,7 +4,7 @@
 use Infinitops\Referral\Models\UserCategory;
 use Infinitops\Referral\Models\UserPermission;
 
-$categories = UserCategory::all();
+$categories = UserCategory::where('deleted', 0)->get();
 $permissions = UserPermission::all();
 
 if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :

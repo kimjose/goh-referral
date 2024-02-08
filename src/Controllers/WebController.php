@@ -79,8 +79,10 @@ class WebController
             $attributes = ["id"];
             $missing = Utility::checkMissingAttributes($data, $attributes);
             throw_if(sizeof($missing) > 0, new \Exception("Missing parameters passed : " . json_encode($missing)));
-            $userCategory = UserCategory::findOrFail($id);
-            $userCategory->delete();
+            $users = User::where('category_id', $data['id'])->where('deleted', 0)->get();
+            if(sizeof($users) > 0) throw new \Exception("There are " . sizeof($users) . " users in this category and cannot be deleted");
+            $userCategory = UserCategory::findOrFail($data['id']);
+            $userCategory->update(['deleted' => 1]);
             response(SUCCESS_RESPONSE_CODE, "The user category deleted successfully.");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());

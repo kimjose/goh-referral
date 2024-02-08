@@ -67,7 +67,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2023-04-21T06:33:29.802Z",
-            "modified": "2023-10-28T07:45:48.605Z",
+            "modified": "2024-01-30T19:35:39.802Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -139,7 +139,7 @@
             "method": "POST",
             "sortNum": 60000,
             "created": "2023-04-21T06:33:29.805Z",
-            "modified": "2023-10-21T08:44:17.490Z",
+            "modified": "2024-01-30T19:36:54.925Z",
             "headers": [
                 {
                     "name": "TOKEN",
@@ -149,7 +149,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"surname\": \"Kamau\",\n  \"first_name\": \"John\",\n  \"other_names\": \"Zuckeberg Antony\",\n  \"gender\": \"male\",\n  \"dob\": \"1956-06-07\",\n  \"marital_status\": \"married\",\n  \"education\": \"High School\",\n  \"primary_occupation\": \"rider\",\n  \"identifier\": \"3476894\",\n  \"identifier_type\": \"National ID\",\n  \"phone_no\": \"0712908657\",\n  \"alt_phone_no\": \"\",\n  \"email\": \"\",\n  \"nationality\": \"Kenyan\",\n  \"county_code\": 47,\n  \"sub_county\": 200,\n  \"nearest_health_centre\": \"Kibera Community Amref\",\n  \"nok_name\": \"Javan Masinga\",\n  \"nok_relationship\": \"Son\",\n  \"nok_phone_no\": \"0729099099\",\n  \"has_nhif\": 1,\n  \"nhif_active\": 1,\n  \"preferred_mop\": \"Cash\",\n  \"other_insurance\": \"1,2\"\n}",
+                "raw": "{\n  \"surname\": \"Kamau\",\n  \"first_name\": \"John\",\n  \"other_names\": \"Zuckeberg Antony\",\n  \"gender\": \"male\",\n  \"dob\": \"1956-06-07\",\n  \"marital_status\": \"married\",\n  \"education\": \"High School\",\n  \"primary_occupation\": \"rider\",\n  \"identifier\": \"3476890\",\n  \"identifier_type\": \"National ID\",\n  \"phone_no\": \"0712908657\",\n  \"alt_phone_no\": \"\",\n  \"email\": \"\",\n  \"nationality\": \"Kenyan\",\n  \"county_code\": 47,\n  \"sub_county\": 200,\n  \"nearest_health_centre\": \"Kibera Community Amref\",\n  \"nok_name\": \"Javan Masinga\",\n  \"nok_relationship\": \"Son\",\n  \"nok_phone_no\": \"0729099099\",\n  \"has_nhif\": 1,\n  \"nhif_active\": 1,\n  \"preferred_mop\": \"Cash\",\n  \"other_insurance\": \"1,2\"\n}",
                 "form": []
             },
             "tests": []
