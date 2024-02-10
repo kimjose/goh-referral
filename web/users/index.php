@@ -97,7 +97,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 				if (response.code === 200) {
 					toastr.success(response.message)
 					setTimeout(() => {
-						// window.location.reload()
+						window.location.reload()
 					}, 800)
 				} else throw new Error(response.message)
 			})
