@@ -17,10 +17,10 @@ class PatientsController extends Controller
     public function getPatients()
     {
         $patients = Patient::all();
-        foreach($patients as $patient){
+        foreach ($patients as $patient) {
             $patient->other_insurance_name = "";
             $insurance = Insurance::find($patient->other_insurance);
-            if($insurance != null) $patient->other_insurance_name = $insurance->name;
+            if ($insurance != null) $patient->other_insurance_name = $insurance->name;
         }
         response(SUCCESS_RESPONSE_CODE, "Patients", $patients);
     }
@@ -92,9 +92,14 @@ class PatientsController extends Controller
     {
         try {
             $patients = Patient::where('identifier', $searchString)->get();
-            if (sizeof($patients) > 0)
+            if (sizeof($patients) > 0) {
+                foreach ($patients as $patient) {
+                    $patient->other_insurance_name = "";
+                    $insurance = Insurance::find($patient->other_insurance);
+                    if ($insurance != null) $patient->other_insurance_name = $insurance->name;
+                }
                 response(SUCCESS_RESPONSE_CODE, "Patients found", $patients);
-            else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
+            } else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
