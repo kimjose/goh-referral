@@ -4,6 +4,7 @@ namespace Infinitops\Referral\Controllers;
 
 use Infinitops\Referral\Models\Patient;
 use Infinitops\Referral\Controllers\Utils\Utility;
+use Infinitops\Referral\Models\Insurance;
 
 class PatientsController extends Controller
 {
@@ -15,7 +16,13 @@ class PatientsController extends Controller
 
     public function getPatients()
     {
-        response(SUCCESS_RESPONSE_CODE, "Patients", Patient::all());
+        $patients = Patient::all();
+        foreach($patients as $patient){
+            $patient->other_insurance_name = "";
+            $insurance = Insurance::find($patient->other_insurance);
+            if($insurance != null) $patient->other_insurance_name = $insurance->name;
+        }
+        response(SUCCESS_RESPONSE_CODE, "Patients", $patients);
     }
 
     public function createPatient($data)
@@ -32,6 +39,9 @@ class PatientsController extends Controller
             if ($exists) throw new \Exception("Patient already exists", -1);
             $data['created_by'] = $this->user->id;
             $patient = Patient::create($data);
+            $patient->other_insurance_name = "";
+            $insurance = Insurance::find($patient->other_insurance);
+            if ($insurance != null) $patient->other_insurance_name = $insurance->name;
             response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
@@ -52,6 +62,9 @@ class PatientsController extends Controller
             $patient = Patient::find($id);
             if ($patient == null) throw new \Exception("Patient not found.");
             $patient->update($data);
+            $patient->other_insurance_name = "";
+            $insurance = Insurance::find($patient->other_insurance);
+            if ($insurance != null) $patient->other_insurance_name = $insurance->name;
             response(SUCCESS_RESPONSE_CODE, "Patient created successfully.", $patient);
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
@@ -63,19 +76,23 @@ class PatientsController extends Controller
     {
         try {
             $patient = Patient::where('identifier', $identifier)->first();
-            if($patient)
+            if ($patient) {
+                $patient->other_insurance_name = "";
+                $insurance = Insurance::find($patient->other_insurance);
+                if ($insurance != null) $patient->other_insurance_name = $insurance->name;
                 response(SUCCESS_RESPONSE_CODE, "Patient found", $patient);
-            else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
+            } else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {
             Utility::logError($th->getCode(), $th->getMessage());
             response(PRECONDITION_FAILED_ERROR_CODE, $th->getMessage());
         }
     }
 
-    public function searchPatient($searchString){
+    public function searchPatient($searchString)
+    {
         try {
             $patients = Patient::where('identifier', $searchString)->get();
-            if(sizeof($patients) > 0)
+            if (sizeof($patients) > 0)
                 response(SUCCESS_RESPONSE_CODE, "Patients found", $patients);
             else response(NO_CONTENT_RESPONSE_CODE, "Patient not found");
         } catch (\Throwable $th) {

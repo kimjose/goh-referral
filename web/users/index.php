@@ -53,7 +53,7 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 										<a class="dropdown-item" href="./index?page=users-edit&id=<?php echo $user->id ?>">Edit</a>
 										<?php if ($user->status == "Inactive") : ?>
 											<div class="dropdown-divider"></div>
-											<a class="dropdown-item activate_user_account" href="javascript:void(0)" data-id="<?php echo $user->id ?>">Activate</a>
+											<a class="dropdown-item activate_user_account" href="javascript:void(0)" data-id="<?php echo $user->id ?>" onclick="activateUserAccount(<?php echo $user->id ?>)">Activate</a>
 										<?php endif; ?>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item delete_user" href="javascript:void(0)" data-id="<?php echo $user->id ?>">Delete</a>
@@ -69,45 +69,44 @@ if (!hasPermission(PERM_USER_MANAGEMENT, $currUser)) :
 </div>
 <script>
 	$(document).ready(function() {
-		$('#list').dataTable()
 		// $('.view_user').click(function() {
 		// 	uni_modal("<i class='fa fa-id-card'></i> User Details", "users/view?id=" + $(this).attr('data-id'))
 		// })
 		$('.delete_user').click(function() {
 			_conf("Are you sure you want to delete this user?", "delete_user", [$(this).attr('data-id')])
 		})
-		$('.activate_user_account').click(() => {
-			let el = document.querySelector(".activate_user_account")
-			let userId = $(el).attr('data-id')
-			let data = {
-				id: userId
-			}
-			console.log(data);
-			fetch('user/activate', {
-					method: 'POST',
-					body: JSON.stringify(data),
-					headers: {
-						"content-type": "application/x-www-form-urlencoded"
-					}
-				})
-				.then(response => {
-					return response.json()
-				})
-				.then(response => {
-					if (response.code === 200) {
-						toastr.success(response.message)
-						setTimeout(() => {
-							window.location.reload()
-						}, 800)
-					} else throw new Error(response.message)
-				})
-				.catch(error => {
-					end_load()
-					console.log(error.message);
-					toastr.error(error.message)
-				})
-		})
+		$('#list').DataTable()
 	})
+
+	function activateUserAccount(userId) {
+		let data = {
+			id: userId
+		}
+		console.log(data);
+		fetch('user/activate', {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers: {
+					"content-type": "application/x-www-form-urlencoded"
+				}
+			})
+			.then(response => {
+				return response.json()
+			})
+			.then(response => {
+				if (response.code === 200) {
+					toastr.success(response.message)
+					setTimeout(() => {
+						// window.location.reload()
+					}, 800)
+				} else throw new Error(response.message)
+			})
+			.catch(error => {
+				end_load()
+				console.log(error.message);
+				toastr.error(error.message)
+			})
+	}
 
 	function delete_user(id) {
 		let data = {
